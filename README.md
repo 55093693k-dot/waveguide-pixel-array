@@ -26,12 +26,14 @@ requirement.*
 ## What it is
 
 The device is a silicon-on-insulator layout. Rows of exchange units sit 2.4
-micrometres apart. One unit is one coupling section plus its two bends,
-twenty-one micrometres long, and it writes one pixel of the image: the light
-leaves it on whichever of the two waveguides the pixel value asks for. The 20 by
-20 image therefore needs 400 units, and covers 420 by 48 micrometres; its device
-is 452 micrometres wide. The 21 by 21 image covers 441 by 50.4 and its device is
-473 wide. The extra 32 micrometres are access at the two ends.
+micrometres apart. One unit is twenty-one micrometres of row, and it writes one
+pixel of the image: where the pixel changes, the unit pulls the moving waveguide
+in for 8.66 micrometres so that the light changes waveguide; where the pixel does
+not change, both waveguides simply run straight and the light keeps to the one it
+is on. The 20 by 20 image therefore needs 400 units, and covers 420 by 48
+micrometres; its device is 452 micrometres wide. The 21 by 21 image covers 441 by
+50.4 and its device is 473 wide. The extra 32 micrometres are access at the two
+ends.
 
 ![The layout the encoder produces](figures/fig1_layout_v7.png)
 
@@ -41,11 +43,11 @@ straight one. Green: the same unit used the other way round — the light enters
 the straight waveguide and leaves on the moving one. That is what reciprocity
 means here: the unit does not care which side the light comes from. Both vertical
 axes are stretched, so a 0.3-micrometre waveguide is visible against a
-2.4-micrometre row spacing. The two black dashed lines mark one unit — the length
-of one pixel of the image, 21 micrometres: 5 for the bend into the coupling gap,
-8.66 in the gap, 7.34 in the straight run after it. In a unit where the image does
-not change, the two waveguides simply stay apart and the light keeps to the same
-one.*
+2.4-micrometre row spacing. The two black dashed lines stand one pixel apart, 21
+micrometres along the row. Across the row a pixel is only 2.4 micrometres, so a
+pixel is a long thin cell, 21 by 2.4. Where the image does not change, none of
+this happens: the two waveguides simply run straight and the light keeps to the
+same one.*
 
 The figure is drawn from the file that `encode_image.py` writes, so it always
 shows what the encoder actually produced.
