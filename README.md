@@ -71,13 +71,13 @@ survives fabrication. The same image is shown below at three coupling lengths:
 
 ![The same image at two coupling lengths](figures/fig3_degraded.png)
 
-*Left: the reference device, 8.66 micrometres. Right: 10.8 micrometres, 35 % too
-long. Both panels share one colour scale, in units of the input power — a bright
-pixel is about 0.65 of the input, not 1.0, because light that has moved onto the
-straight waveguide is dimmer than the light entering the chip. The left panel
-reads all 441 pixels correctly, contrast 241.8 times; the right one reads 283 of
-441, contrast 2.7 times. The right panel is a reference for what failure looks
-like, not a specification.*
+*Left: the image as drawn, one level for a bright pixel and one for a dark one.
+Right: 10.8 micrometres, 35 % too long. Both panels share one colour scale, in
+units of the input power; a measured bright pixel is about 0.65 of the input, not
+1.0, because light that has moved onto the straight waveguide is dimmer than the
+light entering the chip. The left panel is a drawing, the right one is measured.
+The right panel reads 283 of 441 pixels correctly, contrast 2.7 times; it is a
+reference for what failure looks like, not a specification.*
 
 The same two states as field maps, on one scale:
 

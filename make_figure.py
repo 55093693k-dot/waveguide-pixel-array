@@ -61,10 +61,16 @@ def main(argv=None):
 
     maps, results = [], []
     for prefix in args.prefix:
-        values = RI.assemble(read(prefix), rows)
+        if prefix == "ideal":
+            values = truth.astype(float)      # the drawing: one level for bright, one for dark
+        else:
+            values = RI.assemble(read(prefix), rows)
         maps.append(values)
         results.append(RI.report(values, truth))
-    vmax = max(0.7, max(float(np.nanpercentile(m, 99.5)) for m in maps))
+    # The measured panels get the full range; the drawing then saturates to a
+    # single colour, which is what a drawing should look like.
+    measured = [m for prefix, m in zip(args.prefix, maps) if prefix != "ideal"]
+    vmax = max(0.7, max(float(np.nanpercentile(m, 99.5)) for m in (measured or maps)))
 
     fig, axes = plt.subplots(1, len(maps), figsize=(5.6 * len(maps), 5.8))
     axes = np.atleast_1d(axes)
