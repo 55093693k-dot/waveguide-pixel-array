@@ -5,17 +5,12 @@ A coupled-waveguide pixel array for near-field image encoding.
 A binary image is written into a photonic chip as the transverse position of
 guided light. The image is read by looking at the near field above the chip.
 
-![The layout the encoder produces](figures/fig1_layout.png)
+![Two images and what comes out of them](figures/fig2_field.png)
 
-*Top: the whole device, 452 by 48 micrometres. Bottom: five pixels of the first
-row, where the image changes twice. Both vertical axes are stretched, so the
-0.3-micrometre waveguides are visible against a 2.4-micrometre row spacing.
-Where the image stays the same, the two waveguides stay apart; where it changes,
-the moving waveguide is pulled in to the coupling gap and the light changes
-waveguide.*
-
-The figure is drawn from the file that `encode_image.py` writes, so it always
-shows what the encoder actually produced.
+*Top row: a 20 by 20 image. Bottom row: a 21 by 21 image. Left: the simulated
+near field, both waveguides. Right: the value read out of each pixel. Each
+column has its own colour bar, in units of the input power; both images read out
+with every pixel correct.*
 
 ## What it is
 
@@ -24,6 +19,17 @@ pixels in each row. One pixel is one coupling section and its two bends,
 twenty-one micrometres long. The rows are 2.4 micrometres apart. The image
 covers 420 by 48 micrometres. The simulated device is 452 micrometres wide; the
 extra 32 micrometres are access at the two ends.
+
+![The layout the encoder produces](figures/fig1_layout.png)
+
+*Top: the whole device. Bottom: five pixels of the first row, where the image
+changes twice. Both vertical axes are stretched, so a 0.3-micrometre waveguide is
+visible against a 2.4-micrometre row spacing. Where the image stays the same the
+two waveguides stay apart; where it changes, the moving waveguide is pulled in to
+the coupling gap and the light changes waveguide.*
+
+The figure is drawn from the file that `encode_image.py` writes, so it always
+shows what the encoder actually produced.
 
 Each row is a pair of waveguides. Light enters on one of them. Where the image
 changes from dark to bright, or from bright to dark, the two waveguides are
@@ -59,8 +65,8 @@ being normalised away. The measured values sit below 1.0 because a bright pixel
 in the target is drawn as 1.0 while a measured bright pixel is 0.6 to 0.7 of the
 input power.*
 
-The full near field, both waveguides, is `figures/fig2_pattern.png`; the layout
-of the same image is `figures/fig1_layout.png`.
+The full near field of both images is `figures/fig2_field.png`; the layout is
+`figures/fig1_layout.png`.
 
 The design rule we state, and do not claim to have validated: the critical
 dimension may be off by about 23.3 divided by the number of exchanges in the row,
@@ -119,6 +125,7 @@ number. The window and the threshold are in `parameters.json`.
 
     encode_image.py      image -> polygons
     plot_geometry.py     polygons -> the layout figure
+    plot_field_pair.py   two images -> figure 2
     simulate_row.py      polygons -> one row of a wave simulation
     read_image.py        simulated data -> pixel values
     make_figure.py       target against measurement, figures 3 and 4
