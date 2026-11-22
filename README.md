@@ -136,10 +136,11 @@ number. The window and the threshold are in `parameters.json`.
     figures/             the figures
     checks/              scripts used to look for weak rows and crosstalk
 
-Every dimension the encoder and the simulation use is in `parameters.json`. The
-shipped arrays in `data/` are the per-pixel values and the port powers, not the
-field dumps: a single row of field data is about 28 MB, and the forty-odd rows
-behind this paper would not fit in a repository.
+Every dimension the encoder and the simulation use is in `parameters.json`.
+
+`data/` holds the per-pixel values, the port powers, and the two assembled fields
+behind figure 2. The fields there are decimated by two for display, about 1.3 MB
+each; the per-row field dumps they came from are 28 MB each and are not included.
 
 ## Boundaries
 
