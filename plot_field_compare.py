@@ -1,4 +1,4 @@
-"""plot_field_compare.py -- the same image, calibrated and 35 % off.
+﻿"""plot_field_compare.py -- the same image, calibrated and 35 % off.
 
 Two field maps of the same 21 by 21 image, on one colour scale, so the loss of
 contrast is visible rather than normalised away. The calibrated run is taken as
@@ -20,8 +20,7 @@ sys.path.insert(0, str(HERE))
 import plot_field_pair as FP                                   # noqa: E402
 
 FIG = HERE / "figures"
-PANELS = (("smile", "calibrated"), ("smile_e083", "+8.3 % coupling length"),
-          ("smile_e350", "+35 % coupling length"))
+PANELS = (("smile_e083", "ideal"), ("smile_e350", "+35 % coupling length"))
 
 
 def main():
@@ -29,13 +28,13 @@ def main():
     vmax = float(np.percentile(loaded[0][0], 99.5))
 
     # The two runs describe the same device, so the waveguides sit in the same
-    # places. The positions are taken from the calibrated run, where both members
+    # places. The positions are taken from the reference run, where both members
     # of every pair are visible, and reused for the degraded one.
     _, x0, y0, rows0 = loaded[0]
     centres = FP.lanes(loaded[0][0], y0 * 1e6, len(rows0))
 
-    fig, axes = plt.subplots(1, 3, figsize=(14.4, 6.2))
-    fig.subplots_adjust(left=0.05, right=0.985, top=0.90, bottom=0.24, wspace=0.16)
+    fig, axes = plt.subplots(1, 2, figsize=(10.4, 6.2))
+    fig.subplots_adjust(left=0.06, right=0.98, top=0.90, bottom=0.24, wspace=0.18)
 
     for ax, (name, title), (field, x, y, rows) in zip(axes, PANELS, loaded):
         x_um, y_um = x * 1e6, y * 1e6
@@ -50,7 +49,7 @@ def main():
     axes[0].set_ylabel("21 by 21 image\ny (um)", fontsize=9)
     print("lanes taken from the calibrated run: %d" % len(centres))
 
-    bar = fig.add_axes([0.05, 0.08, 0.90, 0.020])
+    bar = fig.add_axes([0.06, 0.08, 0.88, 0.020])
     fig.colorbar(im, cax=bar, orientation="horizontal", label="intensity")
     bar.tick_params(labelsize=8)
 
@@ -62,3 +61,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

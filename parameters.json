@@ -31,7 +31,8 @@
     "transition": "smooth",
     "transition_note": "the bend into and out of the gap follows a raised-cosine ramp; a straight ramp gives a slope jump at both ends",
     "pad_um": 16.0,
-    "row_pitch_um": 2.4
+    "row_pitch_um": 2.4,
+    "reference_note": "the run taken as the reference uses an active length of 8.66 um, 8.3 % longer than the value above, and reads every pixel correctly"
   },
 
   "mesh": {

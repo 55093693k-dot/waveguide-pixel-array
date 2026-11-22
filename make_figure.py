@@ -34,7 +34,19 @@ def label(prefix):
         return "ideal"
     if "_e" in prefix:
         return "+%g %% coupling length" % (int(prefix.split("_e")[1]) / 10.0)
-    return "calibrated"
+    return "as simulated"
+
+
+def read(prefix):
+    """Pixel map for one prefix. 'ideal' is the +8.3 % run, taken as reference.
+
+    That run reads every pixel correctly and its absolute levels are the honest
+    ones: light that has moved onto the straight waveguide is dimmer than the
+    light entering the chip, so a hand-drawn 1.0 would be wrong.
+    """
+    if prefix == "ideal":
+        prefix = "smile_e083"
+    return DATA / ("readout_%s.npz" % prefix)
 
 
 def main(argv=None):
@@ -49,10 +61,7 @@ def main(argv=None):
 
     maps, results = [], []
     for prefix in args.prefix:
-        if prefix == "ideal":
-            values = truth.astype(float)
-        else:
-            values = RI.assemble(DATA / ("readout_%s.npz" % prefix), rows)
+        values = RI.assemble(read(prefix), rows)
         maps.append(values)
         results.append(RI.report(values, truth))
     vmax = max(0.7, max(float(np.nanpercentile(m, 99.5)) for m in maps))
@@ -68,9 +77,8 @@ def main(argv=None):
         for k in range(1, truth.shape[1]):
             ax.axhline(k - 0.5, color="0.35", lw=0.3)
             ax.axvline(k - 0.5, color="0.35", lw=0.3)
-        print("%-14s %3d of %3d pixels correct%s"
-              % (prefix, res["correct"], res["pixels"],
-                 "" if prefix == "ideal" else ", contrast %.1f" % res["contrast"]))
+        print("%-14s %3d of %3d pixels correct, contrast %.1f"
+              % (prefix, res["correct"], res["pixels"], res["contrast"]))
 
     fig.colorbar(plt.cm.ScalarMappable(norm=Normalize(0.0, vmax), cmap="inferno"),
                  ax=axes.tolist(), fraction=0.030, pad=0.02,

@@ -50,6 +50,16 @@ def main():
     if not res["separated"]:
         FAILED.append("no overlap")
 
+    print("the reference device, 8.66 um")
+    ref_rows = RI.load_image(IMAGES / "smile.txt")
+    ref_truth = RI.truth_matrix(ref_rows)
+    ref_values = RI.assemble(DATA / "readout_smile_e083.npz", ref_rows)
+    ref = RI.report(ref_values, ref_truth)
+    check("pixels correct", ref["correct"], 441, 0)
+    check("dim bright pixel", ref["dim_bright"], 0.6324, 5e-4)
+    check("brightest dark pixel", ref["bright_dark"], 0.0869, 5e-4)
+    check("contrast", ref["contrast"], 241.8, 0.1)
+
     print("the same image at three coupling lengths")
     for tag, want_ok, want_contrast in (("readout_smile.npz", 441, 80.8),
                                         ("readout_smile_e083.npz", 441, 241.8),

@@ -48,14 +48,14 @@ camera alone is not enough.
 
 | | pixels correct | contrast |
 |---|---|---|
-| 20 by 20 image, calibrated design | 400 of 400 | 216 x |
-| 21 by 21 image, calibrated design | 441 of 441 | 80.8 x |
-| same, coupling length 8 % long | 441 of 441 | 241.8 x |
-| same, coupling length 35 % long | 283 of 441 | 2.7 x |
+| 20 by 20 image, coupling length 8.0 um | 400 of 400 | 216 x |
+| 21 by 21 image, 8.66 um — taken as the reference | 441 of 441 | 241.8 x |
+| same, 10.8 um (35 % too long) | 283 of 441 | 2.7 x |
 
-With the calibrated design the two brightness groups do not overlap: the dimmest
-bright pixel is 0.568 and the brightest dark pixel is 0.166, both in units of the
-input power. A single threshold separates them, so the readout needs no
+With the reference device the two brightness groups do not overlap: the dimmest
+bright pixel is 0.632 and the brightest dark pixel is 0.087, both in units of the
+input power. For the 20 by 20 image the same two numbers are 0.568 and 0.166. A
+single threshold separates the groups in either case, so the readout needs no
 per-pixel calibration.
 
 **Loss.** Each row leaves 98.6 % of its input power in its two output waveguides:
@@ -69,24 +69,23 @@ back as reflection. The worst of the twenty rows is 0.065 dB
 **When the coupling length is wrong.** A device is only interesting if it
 survives fabrication. The same image is shown below at three coupling lengths:
 
-![The same image at three coupling lengths](figures/fig3_degraded.png)
+![The same image at two coupling lengths](figures/fig3_degraded.png)
 
-*Left: the image as drawn. Middle: coupling section 8.3 % too long. Right: 35 %
-too long. All three panels share one colour scale. The middle panel reads all 441
-pixels correctly and its contrast comes out at 241.8 times, against 80.8 for the
-calibrated device — the dark pixels are darker there, and at these levels the
-contrast ratio mostly says how dark the dark pixels are, not how many pixels are
-right. The right panel reads 283 of 441, contrast 2.7 times. It is a reference
-for what failure looks like, not a specification.*
+*Left: the reference device, 8.66 micrometres. Right: 10.8 micrometres, 35 % too
+long. Both panels share one colour scale, in units of the input power — a bright
+pixel is about 0.65 of the input, not 1.0, because light that has moved onto the
+straight waveguide is dimmer than the light entering the chip. The left panel
+reads all 441 pixels correctly, contrast 241.8 times; the right one reads 283 of
+441, contrast 2.7 times. The right panel is a reference for what failure looks
+like, not a specification.*
 
-The same three states as field maps, on one scale:
+The same two states as field maps, on one scale:
 
-![The same field at three coupling lengths](figures/fig4_field_compare.png)
+![The same field at two coupling lengths](figures/fig4_field_compare.png)
 
-*Left: calibrated, taken as the reference. Middle: 8.3 % too long. Right: 35 %
-too long. Only the straight waveguide is kept, as in figure 2, so the image can
-be read in all three. The contrast loss of the right panel is in the data, not in
-the drawing.*
+*Left: the reference device. Right: 35 % too long. Only the straight waveguide is
+kept, as in figure 2, so the image can be read in both. The right panel's rows are
+lit almost everywhere, which is the contrast loss itself.*
 
 ## Tolerance
 
@@ -105,11 +104,12 @@ The result is a rule of thumb, **not a validated prediction**:
 > the critical dimension may be off by about **40.8 / N nanometres**, where N is
 > the number of exchanges in that row, before the row's contrast falls to 2.
 
-The two levels and the contrast at zero error (34 times) are measured; the shape
-of the curve is geometry. Nothing here was checked against a device built to a
-known error, and the 40.8 is not offered as a guarantee — only as the simplest
-statement of what the geometry says. `python plot_tolerance.py` recomputes it
-from `data/readout_dino.npz` in under a second.
+The two levels and the contrast at zero error (34 times, from the 20 by 20 image)
+are measured; the shape of the curve is geometry. Nothing here was checked
+against a device built to a known error, and the 40.8 is not offered as a
+guarantee — only as the simplest statement of what the geometry says.
+`python plot_tolerance.py` recomputes it from `data/readout_dino.npz` in under a
+second.
 
 ## Reproduce it
 
