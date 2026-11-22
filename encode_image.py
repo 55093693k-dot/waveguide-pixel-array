@@ -1,4 +1,4 @@
-﻿"""encode_image.py -- turn a binary image into a waveguide layout.
+"""encode_image.py -- turn a binary image into a waveguide layout.
 
 Reads a text image (one line per row, '#' bright, '.' dark) and writes
 geometry.json: every polygon, ready to be imported into a layout editor or
@@ -171,7 +171,7 @@ def row_polygons(row, index):
             {"name": "moving", "centre_y_um": round(yc, 4),
              "vertices": [[round(a, 4), round(b, 4)] for a, b in upper + lower]},
         ],
-        "lanes": {
+        "waveguides": {
             "straight": [round(y_straight - W / 2.0, 4), round(y_straight + W / 2.0, 4)],
             "moving_rest": [round(y_rest - W / 2.0, 4), round(y_rest + W / 2.0, 4)],
             "moving_coupled": [round(y_coupled - W / 2.0, 4), round(y_coupled + W / 2.0, 4)],

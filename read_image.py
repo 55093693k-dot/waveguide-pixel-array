@@ -1,4 +1,4 @@
-﻿"""read_image.py -- recover the pixels from simulated data.
+"""read_image.py -- recover the pixels from simulated data.
 
 Two kinds of input are accepted.
 
@@ -30,7 +30,7 @@ P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8-sig"))
 
 CELL = P["unit"]["total_um"]
 PAD = P["unit"]["pad_um"]
-LANE = P["readout"]["display_lane_offset_um"]
+Y_IMAGE = P["readout"]["image_offset_um"]
 XW = P["readout"]["x_half_window_um"]
 YW = P["readout"]["y_half_window_um"]
 THR = P["readout"]["threshold"]
@@ -65,7 +65,7 @@ def pixels_from_field(path, n_pix, row_in_scene=0):
     x = (z["x"] if z["x"].ndim == 1 else z["x"][:, 0]) * 1e6
     y = (z["y"] if z["y"].ndim == 1 else z["y"][0, :]) * 1e6
 
-    band = (y >= LANE + 2.4 * row_in_scene - YW) & (y <= LANE + 2.4 * row_in_scene + YW)
+    band = (y >= Y_IMAGE + 2.4 * row_in_scene - YW) & (y <= Y_IMAGE + 2.4 * row_in_scene + YW)
     values = np.zeros(n_pix)
     for c in range(n_pix):
         centre = PAD + (c + 0.5) * CELL

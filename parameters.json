@@ -59,7 +59,7 @@
   },
 
   "readout": {
-    "display_lane_offset_um": 0.25,
+    "image_offset_um": 0.25,
     "x_half_window_um": 8.0,
     "y_half_window_um": 0.10,
     "threshold": 0.367,

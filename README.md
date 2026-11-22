@@ -93,9 +93,10 @@ per-pixel calibration.
 back as reflection. The worst of the twenty rows is 0.067 dB
 (`data/port_powers.json`).
 
-**Crosstalk.** One addressed row leaks 21.9 dB down into the row beside it, and
-28.2 dB down into rows three or more away, both relative to that addressed row's
-own output (`data/tile_crosstalk_from_map.json`).
+**Crosstalk.** With one line of a ten-line window driven and the other nine dark,
+the neighbour of the driven line carries 22.8 dB less than the driven line itself,
+and no other line of the window carries more than 25 dB below it, both relative to
+the driven line's own output (`data/tile_crosstalk_from_map.json`).
 
 **When the coupling length is wrong.** A device is only interesting if it
 survives fabrication. The same image is shown below at three coupling lengths:
@@ -177,7 +178,7 @@ Figures 2 to 5 are drawn from the shipped data by:
 
     python simulate_row.py --row 0
 
-One row takes about twenty minutes on one processor. This step needs Ansys
+One row takes about twenty minutes. This step needs Ansys
 Lumerical FDTD, which is commercial and needs a licence. Without it the script
 says so and stops.
 
@@ -208,11 +209,9 @@ number. The window and the threshold are in `parameters.json`.
 
 Every dimension the encoder and the simulation use is in `parameters.json`.
 
-`data/` holds the per-pixel values, the port powers, the assembled fields behind
-figures 2 and 4, and the geometry that was simulated
-(`geometry_20x20_simulated.json`). The fields are decimated by two for display,
-about 1.3 MB each; the per-row field dumps they came from are 28 MB each and are
-not included.
+`data/` holds the per-pixel values, the port powers and the assembled fields behind
+figures 2 and 4. The fields are decimated by two for display, about 1.3 MB each;
+the per-row field dumps they came from are 28 MB each and are not included.
 
 ## Boundaries
 
@@ -230,6 +229,7 @@ Technology, Hong Kong. ORCID:
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 

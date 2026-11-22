@@ -1,4 +1,4 @@
-﻿"""simulate_row.py -- run one row of the device in a wave solver.
+"""simulate_row.py -- run one row of the device in a wave solver.
 
 Takes a row of the image, builds the layout from encode_image.py, sends light
 in at one end, and writes what comes out: the four port powers and the near
@@ -100,9 +100,9 @@ def build(fdtd, row, index=0, nfreq=None, port_span=None):
     fdtd.setglobalmonitor("use source limits", True)
     fdtd.setglobalmonitor("frequency points", nfreq)
 
-    lanes = geo["lanes"]
-    y_straight = 0.5 * (lanes["straight"][0] + lanes["straight"][1])
-    y_moving = 0.5 * (lanes["moving_rest"][0] + lanes["moving_rest"][1])
+    guides = geo["waveguides"]
+    y_straight = 0.5 * (guides["straight"][0] + guides["straight"][1])
+    y_moving = 0.5 * (guides["moving_rest"][0] + guides["moving_rest"][1])
     x_in, x_out = -xc + PORT_OFFSET, xc - PORT_OFFSET
     for name, y, x, direction in (
             ("straight_in", y_straight, x_in, "Forward"),

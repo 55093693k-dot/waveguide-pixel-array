@@ -1,4 +1,4 @@
-﻿"""plot_geometry.py -- draw the layout that encode_image.py produces.
+"""plot_geometry.py -- draw the layout that encode_image.py produces.
 
 Top: the whole device. Bottom: three pixels, close enough to see the two gaps
 that carry the image.
@@ -89,8 +89,8 @@ def main():
     ax2.set_title("one exchange unit", fontsize=10)
     ax2.tick_params(labelsize=8)
 
-    y_straight = 0.5 * (row["lanes"]["straight"][0] + row["lanes"]["straight"][1])
-    y_rest = 0.5 * (row["lanes"]["moving_rest"][0] + row["lanes"]["moving_rest"][1])
+    y_straight = 0.5 * (row["waveguides"]["straight"][0] + row["waveguides"]["straight"][1])
+    y_rest = 0.5 * (row["waveguides"]["moving_rest"][0] + row["waveguides"]["moving_rest"][1])
 
     def arrow(start_xy, end_xy, colour, bend=0.0):
         patch = FancyArrowPatch(start_xy, end_xy, arrowstyle="-|>", mutation_scale=17,

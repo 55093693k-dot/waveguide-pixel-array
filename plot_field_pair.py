@@ -1,4 +1,4 @@
-﻿"""plot_field_pair.py -- the near field of two different images.
+"""plot_field_pair.py -- the near field of two different images.
 
 Two rows, one per image. Left column: the whole field, both waveguides. Right
 column: only the straight waveguide, which is where the image sits. All four
@@ -61,7 +61,7 @@ def peaks_in(field, y_um, lo, hi, thr=0.03):
     return sorted((float(yy[g[0]]), float(ss[g[0]])) for g in groups)
 
 
-def lanes(field, y_um, n_rows):
+def row_centres(field, y_um, n_rows):
     """Where the display waveguide of each row sits.
 
     The straight waveguide is the upper member of each pair. When a row is dark
@@ -108,7 +108,7 @@ def readout(name, rows):
 def check(field, y_um, centres, rows, x_um):
     """Read each row back and report any row whose pattern is inverted.
 
-    This is the guard for the mistake described in lanes(): if a row comes back
+    This is the guard for the mistake described in row_centres(): if a row comes back
     anticorrelated with the image, the wrong waveguide was kept.
     """
     truth = RI.truth_matrix(rows)
@@ -134,9 +134,9 @@ def main():
 
     for row, (name, (field, x, y, rows)) in enumerate(zip(IMAGES, loaded)):
         x_um, y_um = x * 1e6, y * 1e6
-        centres = lanes(field, y_um, len(rows))
+        centres = row_centres(field, y_um, len(rows))
         bad = check(field, y_um, centres, rows, x_um)
-        print("%-6s lanes %d, inverted rows %s" % (name, len(centres), bad or "none"))
+        print("%-6s rows %d, inverted rows %s" % (name, len(centres), bad or "none"))
         single = display_only(field, y_um, centres)
 
         ax = axes[row][0]

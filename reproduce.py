@@ -72,18 +72,19 @@ def main():
         if tag == "readout_smile_e350.npz":
             check("    pixels wrong", res["wrong"], 158, 0)
 
-    print("how far the addressed row leaks into its neighbours")
+    print("how far the driven line leaks into its neighbours")
     tiles = json.loads((DATA / "tile_crosstalk_from_map.json").read_text(encoding="utf-8-sig"))
-    adjacent, far = -np.inf, -np.inf
+    adjacent, others = -np.inf, -np.inf
     for tile in tiles:
-        t = np.array([tile["T"][k] for k in sorted(tile["T"], key=int)], dtype=float)
-        ref = t[0]
-        if len(t) > 1:
-            adjacent = max(adjacent, 10 * np.log10(max(t[1], 1e-12) / ref))
-        for value in t[3:]:
-            far = max(far, 10 * np.log10(max(value, 1e-12) / ref))
-    check("worst neighbour, one row away, dB", adjacent, -21.9, 0.1)
-    check("worst neighbour, three rows away, dB", far, -28.2, 0.1)
+        keys = sorted(tile["P"], key=int)
+        p = np.array([tile["P"][key] for key in keys], dtype=float)
+        ref = p[0]
+        if len(p) > 1:
+            adjacent = max(adjacent, 10 * np.log10(max(p[1], 1e-12) / ref))
+        for value in p[2:]:
+            others = max(others, 10 * np.log10(max(value, 1e-12) / ref))
+    check("worst neighbour, one line away, dB", adjacent, -22.8, 0.1)
+    check("worst other line of the window, dB", others, -25.1, 0.1)
 
     print("what each row loses")
     ports = json.loads((DATA / "port_powers.json").read_text(encoding="utf-8-sig"))["rows"]
