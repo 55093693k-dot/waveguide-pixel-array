@@ -33,16 +33,19 @@ leaves it on whichever of the two waveguides the pixel value asks for. The 20 by
 is 452 micrometres wide. The 21 by 21 image covers 441 by 50.4 and its device is
 473 wide. The extra 32 micrometres are access at the two ends.
 
-![The layout the encoder produces](figures/fig1_layout_v6.png)
+![The layout the encoder produces](figures/fig1_layout_v7.png)
 
-*Top: the whole device. Bottom: one exchange unit, cut where the light changes
-waveguide. In red: the light enters on the moving waveguide and leaves on the
-straight one. Both vertical axes are stretched, so a 0.3-micrometre waveguide is
-visible against a 2.4-micrometre row spacing. The two black dashed lines mark one
-unit — the length of one pixel of the image, 21 micrometres: 5 for the bend into
-the coupling gap, 8.66 in the gap, 7.34 in the straight run after it. In a unit
-where the image does not change, the two waveguides simply stay apart and the
-light keeps to the same one.*
+*Top: the whole device. Bottom: one exchange unit, with the exchange itself in
+the middle of the panel. Red: light entering on the moving waveguide leaves on the
+straight one. Green: the same unit used the other way round — the light enters on
+the straight waveguide and leaves on the moving one. That is what reciprocity
+means here: the unit does not care which side the light comes from. Both vertical
+axes are stretched, so a 0.3-micrometre waveguide is visible against a
+2.4-micrometre row spacing. The two black dashed lines mark one unit — the length
+of one pixel of the image, 21 micrometres: 5 for the bend into the coupling gap,
+8.66 in the gap, 7.34 in the straight run after it. In a unit where the image does
+not change, the two waveguides simply stay apart and the light keeps to the same
+one.*
 
 The figure is drawn from the file that `encode_image.py` writes, so it always
 shows what the encoder actually produced.
@@ -152,7 +155,7 @@ waveguides of every row, in micrometres. It needs numpy only.
 
     python plot_geometry.py
 
-then draws that file and writes `figures/fig1_layout_v6.png`, the figure at the
+then draws that file and writes `figures/fig1_layout_v7.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
@@ -222,6 +225,7 @@ Chan King Ho.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 

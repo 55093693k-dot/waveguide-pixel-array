@@ -32,6 +32,8 @@ GAP_ON = P["waveguide"]["gap_coupled_um"]
 GAP_OFF = P["waveguide"]["gap_rest_um"]
 
 COLOURS = {"straight": "#2f6fa8", "moving": "#d1741f"}
+RED = "#d62728"
+GREEN = "#2ca02c"
 
 
 def load_layout():
@@ -73,12 +75,14 @@ def main():
     ax2 = fig.add_subplot(gs[1])
     row = rows[0]
     k = row["exchanges"].index(1)          # the first unit that has to exchange
-    x0 = PAD + k * CELL - BEND / 2.0 - x_half   # cut the period where the exchange starts
+    start = PAD + k * CELL - BEND / 2.0 - x_half    # where the ramp begins
+    reach = BEND + P["unit"]["active_um"] + BEND    # length of the exchange
+    xc = start + reach / 2.0                        # its centre
     draw_row(ax2, row, 0.0)
-    ax2.set_xlim(x0 - 5.0, x0 + CELL + 5.0)
+    ax2.set_xlim(xc - 16.0, xc + 16.0)
     ax2.set_ylim(-1.40, 0.70)
     ax2.set_aspect("auto")
-    for edge in (x0, x0 + CELL):
+    for edge in (start, start + CELL):
         ax2.axvline(edge, color="black", lw=1.0, ls="--")
     ax2.set_xlabel("x (um)")
     ax2.set_ylabel("y (um)")
@@ -88,29 +92,31 @@ def main():
     y_straight = 0.5 * (row["lanes"]["straight"][0] + row["lanes"]["straight"][1])
     y_rest = 0.5 * (row["lanes"]["moving_rest"][0] + row["lanes"]["moving_rest"][1])
 
-    def red_arrow(start, end, bend=0.0):
-        arrow = FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=17,
-                                color="red", lw=1.9, zorder=6, shrinkA=0, shrinkB=0,
+    def arrow(start_xy, end_xy, colour, bend=0.0):
+        patch = FancyArrowPatch(start_xy, end_xy, arrowstyle="-|>", mutation_scale=17,
+                                color=colour, lw=1.9, zorder=6, shrinkA=0, shrinkB=0,
                                 connectionstyle="arc3,rad=%g" % bend)
-        arrow.set_path_effects([pe.withStroke(linewidth=3.2, foreground="white")])
-        ax2.add_patch(arrow)
+        patch.set_path_effects([pe.withStroke(linewidth=3.2, foreground="white")])
+        ax2.add_patch(patch)
 
-    def red_text(x, y, text, ha="center"):
-        label = ax2.text(x, y, text, color="red", fontsize=9, ha=ha, va="center",
+    def note(x, y, text, colour, ha="center", va="center"):
+        label = ax2.text(x, y, text, color=colour, fontsize=9, ha=ha, va=va,
                          zorder=7)
         label.set_path_effects([pe.withStroke(linewidth=3.2, foreground="white")])
 
-    # light goes in on the moving waveguide, and comes out on the straight one
-    red_arrow((x0 - 4.2, y_rest), (x0 + 1.5, y_rest))
-    red_text(x0 - 4.0, y_rest - 0.20, "in", ha="left")
-    red_arrow((x0 + CELL - 1.5, y_straight), (x0 + CELL + 4.2, y_straight))
-    red_text(x0 + CELL + 4.0, y_straight + 0.20, "out", ha="right")
+    # red: in on the moving waveguide, out on the straight one
+    arrow((xc - 12.0, y_rest), (xc - 7.4, y_rest), RED)
+    note(xc - 12.0, y_rest - 0.22, "in", RED, ha="left")
+    arrow((xc + 7.4, y_straight), (xc + 12.6, y_straight), RED)
+    note(xc + 12.6, y_straight + 0.22, "out", RED, ha="right")
+    arrow((xc - 1.4, y_rest + 0.12), (xc - 1.4, y_straight - 0.12), RED, bend=0.35)
 
-    # and it changes waveguide inside the unit
-    red_arrow((x0 + 0.5 * CELL, y_rest + 0.12), (x0 + 0.5 * CELL, y_straight - 0.12),
-              bend=0.35)
-    red_text(x0 + 0.5 * CELL + 1.4, 0.5 * (y_rest + y_straight) - 0.02, "exchange",
-             ha="left")
+    # green: the same unit the other way round, light in on the straight one
+    arrow((xc - 12.0, y_straight), (xc - 7.4, y_straight), GREEN)
+    note(xc - 12.0, y_straight + 0.22, "in", GREEN, ha="left")
+    arrow((xc + 7.4, y_rest), (xc + 12.6, y_rest), GREEN)
+    note(xc + 12.6, y_rest - 0.22, "out", GREEN, ha="right")
+    arrow((xc + 1.4, y_straight - 0.12), (xc + 1.4, y_rest + 0.12), GREEN, bend=0.35)
 
     handles = [Patch([(0, 0), (1, 0), (1, 1)], facecolor=COLOURS[k],
                      label=k + " waveguide")
@@ -120,16 +126,17 @@ def main():
 
     fig.suptitle("Layout of the encoded image", fontsize=10, y=0.995)
 
-    out = HERE / "figures" / "fig1_layout_v6.png"
+    out = HERE / "figures" / "fig1_layout_v7.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches="tight")
-    print("written: figures/fig1_layout_v6.png  (%d rows, %d by %d pixels)"
+    print("written: figures/fig1_layout_v7.png  (%d rows, %d by %d pixels)"
           % (geo["rows"], geo["rows"], geo["columns"]))
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 
 
