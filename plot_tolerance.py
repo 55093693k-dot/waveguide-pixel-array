@@ -19,10 +19,6 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
-import matplotlib.pyplot as plt
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data"
@@ -64,6 +60,11 @@ def crossing(bright, dark, n_exchanges, grid, cell=21.0):
 
 
 def main():
+    import matplotlib
+    matplotlib.use("Agg")
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
+    import matplotlib.pyplot as plt
+
     bright, dark = levels()
     grid = np.linspace(0.0, 40.0, 801)
 

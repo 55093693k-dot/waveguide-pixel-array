@@ -3,6 +3,7 @@
 
   "optical": {
     "wavelength_um": 1.55,
+    "source_band_um": [1.45, 1.65],
     "n_core": 3.48,
     "n_background": 1.45,
     "slab_thickness_um": 0.22,
@@ -26,6 +27,7 @@
     "bend_um": 5.0,
     "active_um": 8.0,
     "flat_um": 8.0,
+    "flat_note": "derived: total - bend - active",
     "total_um": 21.0,
     "total_note": "bend 5 + active 8 + flat 8 = 21",
     "transition": "smooth",
@@ -40,7 +42,15 @@
     "mesh_accuracy": 2,
     "simulation_time_s": 8e-12,
     "domain_height_um": 6.0,
+    "override_y_span_um": 5.0,
+    "override_x_margin_um": 0.4,
     "boundary": "PML"
+  },
+
+  "ports": {
+    "span_um": 0.55,
+    "frequency_points": 51,
+    "offset_from_end_um": 4.0
   },
 
   "readout": {

@@ -103,6 +103,10 @@ def main():
     rule = float(np.exp(np.mean(np.log(tol * ns))))
     check("tolerance coefficient, nm", rule, 40.8, 0.1)
 
+    shipped = json.loads((DATA / "tolerance.json").read_text(encoding="utf-8"))
+    check("tolerance record agrees with the model",
+          shipped["tolerance_nanometres_times_exchanges"], rule, 0.1)
+
     print("")
     if FAILED:
         print("FAILED: %s" % ", ".join(FAILED))

@@ -65,6 +65,10 @@ The percentages in the figure titles are relative to 8.0 micrometres, the length
 the single-exchange calibration gave: 8.66 is 8.3 % more, 10.8 is 35 % more.
 Measured against the reference, 10.8 is 25 % more.
 
+`parameters.json` ships the 8.0 micrometre length, so `encode_image.py` and
+`simulate_row.py` build the device of the first row of the table. To build the
+reference instead, set `pixel.active_um` to 8.66.
+
 With the reference device the two brightness groups do not overlap: the dimmest
 bright pixel is 0.632 and the brightest dark pixel is 0.087, both in units of the
 input power. For the 20 by 20 image the same two numbers are 0.568 and 0.166. A

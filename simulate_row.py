@@ -26,11 +26,18 @@ import encode_image as EI                                       # noqa: E402
 P = EI.P
 SLAB = P["optical"]["slab_thickness_um"]
 MAT = P["optical"]["material"]
+LAMBDA = P["optical"]["wavelength_um"]
+BAND = P["optical"]["source_band_um"]
 DX = P["mesh"]["dx_um"]
 ACC = P["mesh"]["mesh_accuracy"]
 T_SIM = P["mesh"]["simulation_time_s"]
 DOMAIN_H = P["mesh"]["domain_height_um"]
+MESH_Y = P["mesh"]["override_y_span_um"]
+MESH_XM = P["mesh"]["override_x_margin_um"]
 PAD = P["pixel"]["pad_um"]
+PORT_SPAN = P["ports"]["span_um"]
+NFREQ = P["ports"]["frequency_points"]
+PORT_OFFSET = P["ports"]["offset_from_end_um"]
 
 UM = 1e-6
 PORTS = ("straight_in", "moving_in", "straight_out", "moving_out")
@@ -52,8 +59,10 @@ def design():
             "active_um": P["pixel"]["active_um"]}
 
 
-def build(fdtd, row, index=0, nfreq=51, port_span=0.55):
+def build(fdtd, row, index=0, nfreq=None, port_span=None):
     """Place the layout, the ports, the monitors and the solver region."""
+    nfreq = NFREQ if nfreq is None else nfreq
+    port_span = PORT_SPAN if port_span is None else port_span
     geo = EI.row_polygons(row, index)
     x_total = len(row) * EI.CELL + 2 * PAD
     xc = x_total / 2.0
@@ -79,22 +88,22 @@ def build(fdtd, row, index=0, nfreq=51, port_span=0.55):
     for face in ("x min bc", "x max bc", "y min bc", "y max bc"):
         fdtd.setnamed("FDTD", face, "PML")
 
-    fdtd.addmesh({"name": "fine", "x": 0.0, "x span": (x_total - 0.4) * UM,
-                  "y": y_offset * UM, "y span": 5.0 * UM,
+    fdtd.addmesh({"name": "fine", "x": 0.0, "x span": (x_total - MESH_XM) * UM,
+                  "y": y_offset * UM, "y span": MESH_Y * UM,
                   "z": 0.0, "z span": SLAB * UM})
     for key, value in (("override x mesh", 1), ("override y mesh", 1),
                        ("override z mesh", 0), ("dx", DX * UM), ("dy", DX * UM)):
         fdtd.setnamed("fine", key, value)
 
-    fdtd.setglobalsource("wavelength start", 1.45e-6)
-    fdtd.setglobalsource("wavelength stop", 1.65e-6)
+    fdtd.setglobalsource("wavelength start", BAND[0] * UM)
+    fdtd.setglobalsource("wavelength stop", BAND[1] * UM)
     fdtd.setglobalmonitor("use source limits", True)
     fdtd.setglobalmonitor("frequency points", nfreq)
 
     lanes = geo["lanes"]
     y_straight = 0.5 * (lanes["straight"][0] + lanes["straight"][1])
     y_moving = 0.5 * (lanes["moving_rest"][0] + lanes["moving_rest"][1])
-    x_in, x_out = -xc + PAD / 4.0, xc - PAD / 4.0
+    x_in, x_out = -xc + PORT_OFFSET, xc - PORT_OFFSET
     for name, y, x, direction in (
             ("straight_in", y_straight, x_in, "Forward"),
             ("moving_in", y_moving, x_in, "Forward"),
@@ -112,14 +121,14 @@ def build(fdtd, row, index=0, nfreq=51, port_span=0.55):
                    "x": 0.0, "x span": x_total * UM, "y": y_offset * UM,
                    "y span": DOMAIN_H * UM, "z": 0.0, "z span": 0.0})
     fdtd.setnamed("field", "override global monitor settings", 1)
-    fdtd.setnamed("field", "wavelength center", 1.55e-6)
+    fdtd.setnamed("field", "wavelength center", LAMBDA * UM)
     fdtd.setnamed("field", "wavelength span", 0.002e-6)
     fdtd.setnamed("field", "frequency points", 1)
     return x_total
 
 
 
-def run(fdtd, row, index, out_dir, nfreq=51):
+def run(fdtd, row, index, out_dir, nfreq=None):
     """Run one row and write the port record and the field dump."""
     out_dir.mkdir(parents=True, exist_ok=True)
     tag = "row%02d" % index
@@ -136,7 +145,7 @@ def run(fdtd, row, index, out_dir, nfreq=51):
         got = fdtd.getresult("FDTD::ports::" + name, "S")
         lam = np.asarray(got["lambda"]).ravel()
         val = np.asarray(got["S"]).ravel()
-        s[name] = complex(val[int(np.argmin(np.abs(lam - 1.55e-6)))])
+        s[name] = complex(val[int(np.argmin(np.abs(lam - LAMBDA * UM)))])
 
     straight = abs(s["straight_out"]) ** 2
     moving = abs(s["moving_out"]) ** 2
