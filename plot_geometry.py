@@ -1,4 +1,4 @@
-"""plot_geometry.py -- draw the layout that encode_image.py produces.
+﻿"""plot_geometry.py -- draw the layout that encode_image.py produces.
 
 Top: the whole device. Bottom: three pixels, close enough to see the two gaps
 that carry the image.
@@ -103,13 +103,14 @@ def main():
 
     fig.suptitle("Layout of the encoded image", fontsize=10, y=0.995)
 
-    out = HERE / "figures" / "fig0_geometry.png"
+    out = HERE / "figures" / "fig1_layout.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches="tight")
-    print("written: figures/fig0_geometry.png  (%d rows, %d by %d pixels)"
+    print("written: figures/fig1_layout.png  (%d rows, %d by %d pixels)"
           % (geo["rows"], geo["rows"], geo["columns"]))
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
+

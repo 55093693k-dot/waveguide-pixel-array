@@ -1,11 +1,11 @@
-# waveguide-pixel-array
+﻿# waveguide-pixel-array
 
 A coupled-waveguide pixel array for near-field image encoding.
 
 A binary image is written into a photonic chip as the transverse position of
 guided light. The image is read by looking at the near field above the chip.
 
-![The layout the encoder produces](figures/fig0_geometry.png)
+![The layout the encoder produces](figures/fig1_layout.png)
 
 *Top: the whole device, 452 by 48 micrometres. Bottom: five pixels of the first
 row, where the image changes twice. Both vertical axes are stretched, so the
@@ -60,7 +60,7 @@ in the target is drawn as 1.0 while a measured bright pixel is 0.6 to 0.7 of the
 input power.*
 
 The full near field, both waveguides, is `figures/fig2_pattern.png`; the layout
-of the same image is `figures/fig0_geometry.png`.
+of the same image is `figures/fig1_layout.png`.
 
 The design rule we state, and do not claim to have validated: the critical
 dimension may be off by about 23.3 divided by the number of exchanges in the row,
@@ -86,7 +86,7 @@ waveguides of every row, in micrometres. It needs numpy only.
 
     python plot_geometry.py
 
-then draws that file and writes `figures/fig0_geometry.png`, the figure at the
+then draws that file and writes `figures/fig1_layout.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
@@ -144,3 +144,4 @@ behind this paper would not fit in a repository.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
