@@ -1,4 +1,4 @@
-cff-version: 1.2.0
+﻿cff-version: 1.2.0
 message: If you use this work, please cite it as below.
 title: >-
   waveguide-pixel-array: a coupled-waveguide pixel array for near-field image
@@ -8,7 +8,7 @@ authors:
     given-names: King Ho
 type: software
 license: MIT
-doi: 10.5281/zenodo.24435543
+doi: 10.5281/zenodo.24435613
 repository-code: https://github.com/55093693k-dot/waveguide-pixel-array
 abstract: >-
   A binary image is written into a photonic chip as the transverse position of
@@ -20,3 +20,4 @@ keywords:
   - near-field imaging
   - image encoding
   - coupled waveguides
+
