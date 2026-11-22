@@ -100,7 +100,7 @@ own output (`data/tile_crosstalk_from_map.json`).
 **When the coupling length is wrong.** A device is only interesting if it
 survives fabrication. The same image is shown below at three coupling lengths:
 
-![The same image at two coupling lengths](figures/fig3_degraded.png)
+![The same image at two coupling lengths](figures/fig4_degraded.png)
 
 *Left: the image as drawn, one level for a bright pixel and one for a dark one.
 Right: 10.8 micrometres, 35 % too long. Both panels share one colour scale, in
@@ -112,7 +112,7 @@ reference for what failure looks like, not a specification.*
 
 The same two states as field maps, on one scale:
 
-![The same field at two coupling lengths](figures/fig4_field_compare.png)
+![The same field at two coupling lengths](figures/fig5_field_compare.png)
 
 *Left: the reference device. Right: 35 % too long. Only the straight waveguide is
 kept, as in figure 2, so the image can be read in both. The right panel's rows are
@@ -124,7 +124,7 @@ How far may the critical dimension drift before a row stops reading? Each
 exchange is half a beat of coupling, so an error in the dimension becomes a phase
 error, and the phase errors of a row add up. Counting them gives the curve below:
 
-![Tolerance against critical-dimension error](figures/fig5_tolerance.png)
+![Tolerance against critical-dimension error](figures/fig3_tolerance.png)
 
 *Left: contrast of one row against critical-dimension error, for rows that make
 3, 6, 8 and 10 exchanges. Right: the error at which the contrast falls to 2, as a
@@ -169,7 +169,7 @@ dark one. `images/example.txt` is the 20 by 20 image of figure 2;
 Figures 2 to 5 are drawn from the shipped data by:
 
     python plot_field_pair.py
-    python make_figure.py ideal smile_e350 --out figures/fig3_degraded.png
+    python make_figure.py ideal smile_e350 --out figures/fig4_degraded.png
     python plot_field_compare.py
     python plot_tolerance.py
 
@@ -230,6 +230,7 @@ Technology, Hong Kong. ORCID:
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 
