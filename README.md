@@ -37,7 +37,7 @@ ends.
 
 ![The layout the encoder produces](figures/fig1_layout_v7.png)
 
-*Top: the whole device. Bottom: one exchange unit, with the exchange itself in
+*Top: the whole device (Dino). Bottom: one exchange unit, with the exchange itself in
 the middle of the panel. Red: light entering on the moving waveguide leaves on the
 straight one. Green: the same unit used the other way round — the light enters on
 the straight waveguide and leaves on the moving one. That is what reciprocity
