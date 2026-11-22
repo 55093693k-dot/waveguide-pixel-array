@@ -6,7 +6,7 @@ loss of contrast instead of being normalised away.
 
 Usage
     python make_figure.py                                  # ideal, +35 %
-    python make_figure.py smile smile_e350 --out figures/fig3_degraded_v2.png
+    python make_figure.py ideal smile_e350 --out figures/fig3_degraded_v2.png
 
 Counts of wrong pixels belong in the caption, not in the panel title.
 """
@@ -38,20 +38,16 @@ def label(prefix):
 
 
 def read(prefix):
-    """Pixel map for one prefix. 'ideal' is the +8.3 % run, taken as reference.
+    """Where the pixel map for one state lives.
 
-    That run reads every pixel correctly and its absolute levels are the honest
-    ones: light that has moved onto the straight waveguide is dimmer than the
-    light entering the chip, so a hand-drawn 1.0 would be wrong.
+    'ideal' is drawn in main() from the image itself, not read from here.
     """
-    if prefix == "ideal":
-        prefix = "smile_e083"
     return DATA / ("readout_%s.npz" % prefix)
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("prefix", nargs="*", default=["smile", "smile_e350"])
+    ap.add_argument("prefix", nargs="*", default=["ideal", "smile_e350"])
     ap.add_argument("--image", default=str(HERE / "images" / "smile.txt"))
     ap.add_argument("--out", default=str(FIG / "fig3_degraded_v2.png"))
     args = ap.parse_args(argv)
@@ -83,8 +79,9 @@ def main(argv=None):
         for k in range(1, truth.shape[1]):
             ax.axhline(k - 0.5, color="0.35", lw=0.3)
             ax.axvline(k - 0.5, color="0.35", lw=0.3)
-        print("%-14s %3d of %3d pixels correct, contrast %.1f"
-              % (prefix, res["correct"], res["pixels"], res["contrast"]))
+        print("%-14s %3d of %3d pixels correct%s"
+              % (prefix, res["correct"], res["pixels"],
+                 "" if prefix == "ideal" else ", contrast %.1f" % res["contrast"]))
 
     fig.colorbar(plt.cm.ScalarMappable(norm=Normalize(0.0, vmax), cmap="inferno"),
                  ax=axes.tolist(), fraction=0.030, pad=0.02,

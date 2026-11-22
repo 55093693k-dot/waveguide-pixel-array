@@ -44,6 +44,7 @@ def main():
     check("pixels correct", res["correct"], 400, 0)
     check("dim bright pixel", res["dim_bright"], 0.5676, 5e-4)
     check("brightest dark pixel", res["bright_dark"], 0.1661, 5e-4)
+    check("contrast", res["contrast"], 216.4, 0.1)
     print("  %-46s %10s  expected %8s  %s"
           % ("the two groups do not overlap", res["separated"], "True",
              "ok" if res["separated"] else "MISMATCH"))

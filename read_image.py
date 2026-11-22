@@ -98,13 +98,18 @@ def readout_map(path):
 def field_map(folder, image_rows):
     """Bit pattern -> pixel values, from the per-row field dumps of one image.
 
-    A simulation may stand in for several image rows when those rows carry the
-    same pattern; the record says which rows it covers.
+    A record is used only if it says which image rows it covers and its field
+    dump is next to it, so pointing this at a folder of mixed files is safe. A
+    simulation may stand in for several image rows when those rows carry the same
+    pattern; the record says which rows it covers.
     """
     out = {}
-    for js in sorted(Path(folder).glob("*_r??.json")):
-        rec = json.loads(js.read_text(encoding="utf-8"))
-        rows = rec.get("art_rows") or [int(js.stem.split("_r")[1][:2])]
+    for js in sorted(Path(folder).glob("*.json")):
+        # utf-8-sig: a hand-edited record on Windows often carries a byte-order mark.
+        rec = json.loads(js.read_text(encoding="utf-8-sig"))
+        rows = rec.get("art_rows")
+        if not rows:
+            continue
         npz = js.with_name(js.stem + "_map.npz")
         if not npz.exists():
             continue

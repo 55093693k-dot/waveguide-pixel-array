@@ -16,11 +16,11 @@ requirement.*
 
 ## What it is
 
-The device is a silicon-on-insulator layout. It has twenty rows and twenty
-pixels in each row. One pixel is one coupling section and its two bends,
-twenty-one micrometres long. The rows are 2.4 micrometres apart. The image
-covers 420 by 48 micrometres. The simulated device is 452 micrometres wide; the
-extra 32 micrometres are access at the two ends.
+The device is a silicon-on-insulator layout. Rows of pixels sit 2.4 micrometres
+apart. One pixel is one coupling section plus its two bends, twenty-one
+micrometres long. The 20 by 20 image covers 420 by 48 micrometres and its device
+is 452 micrometres wide; the 21 by 21 image covers 441 by 50.4 and its device is
+473 wide. The extra 32 micrometres are access at the two ends.
 
 ![The layout the encoder produces](figures/fig1_layout_v2.png)
 
@@ -48,9 +48,13 @@ camera alone is not enough.
 
 | | pixels correct | contrast |
 |---|---|---|
-| 20 by 20 image, coupling length 8.0 um | 400 of 400 | 216 x |
+| 20 by 20 image, 8.0 um | 400 of 400 | 216 x |
 | 21 by 21 image, 8.66 um — taken as the reference | 441 of 441 | 241.8 x |
-| same, 10.8 um (35 % too long) | 283 of 441 | 2.7 x |
+| same image, 10.8 um — 25 % longer than the reference | 283 of 441 | 2.7 x |
+
+The percentages in the figure titles are relative to 8.0 micrometres, the length
+the single-exchange calibration gave: 8.66 is 8.3 % more, 10.8 is 35 % more.
+Measured against the reference, 10.8 is 25 % more.
 
 With the reference device the two brightness groups do not overlap: the dimmest
 bright pixel is 0.632 and the brightest dark pixel is 0.087, both in units of the
@@ -64,7 +68,8 @@ back as reflection. The worst of the twenty rows is 0.065 dB
 (`data/port_powers.json`).
 
 **Crosstalk.** One addressed row leaks 21.9 dB down into the row beside it, and
-28.2 dB down into rows three or more away (`data/tile_crosstalk_from_map.json`).
+28.2 dB down into rows three or more away, both relative to that addressed row's
+own output (`data/tile_crosstalk_from_map.json`).
 
 **When the coupling length is wrong.** A device is only interesting if it
 survives fabrication. The same image is shown below at three coupling lengths:
@@ -132,8 +137,8 @@ then draws that file and writes `figures/fig1_layout_v2.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
-dark one. `images/example.txt` is the 20 by 20 image used throughout;
-`images/smile.txt` is the 21 by 21 one.
+dark one. `images/example.txt` is the 20 by 20 image of figure 2;
+`images/smile.txt` is the 21 by 21 one used in figures 3 and 4.
 
 Figures 2 to 5 are drawn from the shipped data by:
 
@@ -178,9 +183,11 @@ number. The window and the threshold are in `parameters.json`.
 
 Every dimension the encoder and the simulation use is in `parameters.json`.
 
-`data/` holds the per-pixel values, the port powers, and the two assembled fields
-behind figure 2. The fields there are decimated by two for display, about 1.3 MB
-each; the per-row field dumps they came from are 28 MB each and are not included.
+`data/` holds the per-pixel values, the port powers, the two assembled fields
+behind figure 2, and the geometry that was simulated
+(`geometry_simulated.json`). The fields there are decimated by two for display,
+about 1.3 MB each; the per-row field dumps they came from are 28 MB each and are
+not included.
 
 ## Boundaries
 
