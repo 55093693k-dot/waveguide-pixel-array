@@ -6,6 +6,8 @@ title: >-
 authors:
   - family-names: Chan
     given-names: King Ho
+    orcid: https://orcid.org/0009-0002-0435-2030
+    affiliation: Department of Physics, The Hong Kong University of Science and Technology, Hong Kong
 type: software
 license: MIT
 doi: 10.5281/zenodo.24435613

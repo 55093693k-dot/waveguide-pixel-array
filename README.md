@@ -223,7 +223,9 @@ not included.
 
 ## Author
 
-Chan King Ho.
+Chan King Ho — Department of Physics, The Hong Kong University of Science and
+Technology, Hong Kong. ORCID:
+[0009-0002-0435-2030](https://orcid.org/0009-0002-0435-2030).
 
 ## Licence
 
