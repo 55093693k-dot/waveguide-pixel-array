@@ -67,23 +67,26 @@ back as reflection. The worst of the twenty rows is 0.065 dB
 28.2 dB down into rows three or more away (`data/tile_crosstalk_from_map.json`).
 
 **When the coupling length is wrong.** A device is only interesting if it
-survives fabrication. The same image is shown below at the calibrated length and
-with the coupling section 35 % too long:
+survives fabrication. The same image is shown below at three coupling lengths:
 
-![The same image, calibrated and 35 % off](figures/fig3_degraded.png)
+![The same image at three coupling lengths](figures/fig3_degraded.png)
 
-*Both panels are pixel maps of the same 21 by 21 image, on one colour scale.
-Left: the image as drawn. Right: the pixels that come back when the coupling
-section is 35 % too long, 283 of 441 correct, contrast 2.7 times. This run is a
-reference for what failure looks like; it is not a specification.*
+*Left: the image as drawn. Middle: coupling section 8.3 % too long. Right: 35 %
+too long. All three panels share one colour scale. The middle panel reads all 441
+pixels correctly and its contrast comes out at 241.8 times, against 80.8 for the
+calibrated device — the dark pixels are darker there, and at these levels the
+contrast ratio mostly says how dark the dark pixels are, not how many pixels are
+right. The right panel reads 283 of 441, contrast 2.7 times. It is a reference
+for what failure looks like, not a specification.*
 
-The same comparison on the field itself, on one scale:
+The same three states as field maps, on one scale:
 
-![The same field, calibrated and 35 % off](figures/fig4_field_compare.png)
+![The same field at three coupling lengths](figures/fig4_field_compare.png)
 
-*Left: the calibrated run, taken as the reference. Right: the coupling section
-35 % too long. Only the straight waveguide is kept, as in figure 2, so the image
-can be read in both. The loss of contrast is in the data, not in the drawing.*
+*Left: calibrated, taken as the reference. Middle: 8.3 % too long. Right: 35 %
+too long. Only the straight waveguide is kept, as in figure 2, so the image can
+be read in all three. The contrast loss of the right panel is in the data, not in
+the drawing.*
 
 ## Tolerance
 
@@ -135,7 +138,7 @@ dark one. `images/example.txt` is the 20 by 20 image used throughout;
 Figures 2 to 5 are drawn from the shipped data by:
 
     python plot_field_pair.py
-    python make_figure.py ideal smile_e350 --out figures/fig3_degraded.png
+    python make_figure.py ideal smile_e083 smile_e350 --out figures/fig3_degraded.png
     python plot_field_compare.py
     python plot_tolerance.py
 

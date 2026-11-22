@@ -27,7 +27,8 @@ DATA = HERE / "data"
 FIG = HERE / "figures"
 
 IMAGES = ("dino", "smile")
-FILES = {"dino": "example.txt", "smile": "smile.txt", "smile_e350": "smile.txt"}
+FILES = {"dino": "example.txt", "smile": "smile.txt",
+         "smile_e083": "smile.txt", "smile_e350": "smile.txt"}
 
 
 def load(name):
@@ -38,8 +39,14 @@ def load(name):
 
 
 def peaks_in(field, y_um, lo, hi, thr=0.03):
-    """Local maxima of the mean profile between two y values."""
-    profile = field.mean(axis=0)
+    """Local maxima of the profile between two y values.
+
+    The profile is the maximum over x, not the mean. A row that is nearly dark
+    still has one or two bright pixels, and only a maximum keeps those; a mean
+    over x would leave such a row with no peak at its straight waveguide, and the
+    row would then be read off the other waveguide, pattern inverted.
+    """
+    profile = np.convolve(field.max(axis=0), np.ones(3) / 3.0, mode="same")
     band = (y_um >= lo) & (y_um <= hi)
     yy, ss = y_um[band], profile[band]
     idx = [j for j in range(1, len(ss) - 1)
