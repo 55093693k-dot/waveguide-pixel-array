@@ -1,0 +1,8 @@
+{
+ "bright_level": 0.67,
+ "dark_level": 0.0197,
+ "contrast_at_zero_error": 34.01,
+ "target_contrast": 2.0,
+ "tolerance_nanometres_times_exchanges": 40.8,
+ "note": "tolerance = 40.8 / (exchanges in the row), in nanometres; computed from the model above, levels measured"
+}

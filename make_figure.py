@@ -1,4 +1,4 @@
-"""make_figure.py -- one image, two states, side by side.
+﻿"""make_figure.py -- one image, two states, side by side.
 
 Every panel is a pixel map of the same image, read out of a different simulated
 state. All panels share one colour scale, so a loss of contrast shows up as a
@@ -30,6 +30,8 @@ FIG = HERE / "figures"
 
 def label(prefix):
     """What the run was, in a few words."""
+    if prefix == "ideal":
+        return "ideal"
     if "_e" in prefix:
         return "+%g %% coupling length" % (int(prefix.split("_e")[1]) / 10.0)
     return "calibrated"
@@ -47,7 +49,10 @@ def main(argv=None):
 
     maps, results = [], []
     for prefix in args.prefix:
-        values = RI.assemble(DATA / ("readout_%s.npz" % prefix), rows)
+        if prefix == "ideal":
+            values = truth.astype(float)
+        else:
+            values = RI.assemble(DATA / ("readout_%s.npz" % prefix), rows)
         maps.append(values)
         results.append(RI.report(values, truth))
     vmax = max(0.7, max(float(np.nanpercentile(m, 99.5)) for m in maps))
@@ -63,8 +68,9 @@ def main(argv=None):
         for k in range(1, truth.shape[1]):
             ax.axhline(k - 0.5, color="0.35", lw=0.3)
             ax.axvline(k - 0.5, color="0.35", lw=0.3)
-        print("%-14s %3d of %3d pixels correct, contrast %5.1f"
-              % (prefix, res["correct"], res["pixels"], res["contrast"]))
+        print("%-14s %3d of %3d pixels correct%s"
+              % (prefix, res["correct"], res["pixels"],
+                 "" if prefix == "ideal" else ", contrast %.1f" % res["contrast"]))
 
     fig.colorbar(plt.cm.ScalarMappable(norm=Normalize(0.0, vmax), cmap="inferno"),
                  ax=axes.tolist(), fraction=0.030, pad=0.02,
@@ -79,3 +85,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
+

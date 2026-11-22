@@ -1,0 +1,145 @@
+{
+ "note": "port powers at 1550 nm for each row of the 20 by 20 image, in units of the input power",
+ "rows": {
+  "0": {
+   "straight": 0.058,
+   "moving": 0.9275,
+   "reflected": 8e-05,
+   "total": 0.9855,
+   "run_s": 1636.9
+  },
+  "1": {
+   "straight": 0.9371,
+   "moving": 0.0489,
+   "reflected": 0.00013,
+   "total": 0.9861,
+   "run_s": 1659.2
+  },
+  "2": {
+   "straight": 0.9148,
+   "moving": 0.0712,
+   "reflected": 7e-05,
+   "total": 0.9861,
+   "run_s": 1212.2
+  },
+  "3": {
+   "straight": 0.9148,
+   "moving": 0.0712,
+   "reflected": 7e-05,
+   "total": 0.9861,
+   "run_s": 1212.2
+  },
+  "4": {
+   "straight": 0.9148,
+   "moving": 0.0712,
+   "reflected": 7e-05,
+   "total": 0.9861,
+   "run_s": 1212.2
+  },
+  "5": {
+   "straight": 0.0344,
+   "moving": 0.9513,
+   "reflected": 7e-05,
+   "total": 0.9857,
+   "run_s": 1344.6
+  },
+  "6": {
+   "straight": 0.0618,
+   "moving": 0.9236,
+   "reflected": 7e-05,
+   "total": 0.9855,
+   "run_s": 1378.8
+  },
+  "7": {
+   "straight": 0.0358,
+   "moving": 0.9499,
+   "reflected": 0.00012,
+   "total": 0.9858,
+   "run_s": 1361.0
+  },
+  "8": {
+   "straight": 0.0229,
+   "moving": 0.9617,
+   "reflected": 0.00016,
+   "total": 0.9848,
+   "run_s": 1298.2
+  },
+  "9": {
+   "straight": 0.0376,
+   "moving": 0.9472,
+   "reflected": 0.00017,
+   "total": 0.985,
+   "run_s": 1358.6
+  },
+  "10": {
+   "straight": 0.0119,
+   "moving": 0.9728,
+   "reflected": 0.0001,
+   "total": 0.9848,
+   "run_s": 1261.9
+  },
+  "11": {
+   "straight": 0.0496,
+   "moving": 0.9354,
+   "reflected": 0.00013,
+   "total": 0.9851,
+   "run_s": 1391.0
+  },
+  "12": {
+   "straight": 0.1044,
+   "moving": 0.8812,
+   "reflected": 0.00013,
+   "total": 0.9857,
+   "run_s": 1319.3
+  },
+  "13": {
+   "straight": 0.0956,
+   "moving": 0.89,
+   "reflected": 0.00014,
+   "total": 0.9858,
+   "run_s": 1602.3
+  },
+  "14": {
+   "straight": 0.0829,
+   "moving": 0.9028,
+   "reflected": 9e-05,
+   "total": 0.9858,
+   "run_s": 1364.4
+  },
+  "15": {
+   "straight": 0.0659,
+   "moving": 0.9196,
+   "reflected": 0.00012,
+   "total": 0.9856,
+   "run_s": 1364.1
+  },
+  "16": {
+   "straight": 0.0118,
+   "moving": 0.9734,
+   "reflected": 2e-05,
+   "total": 0.9853,
+   "run_s": 1241.9
+  },
+  "17": {
+   "straight": 0.0015,
+   "moving": 0.9838,
+   "reflected": 7e-05,
+   "total": 0.9854,
+   "run_s": 1292.1
+  },
+  "18": {
+   "straight": 0.0034,
+   "moving": 0.9812,
+   "reflected": 0.00012,
+   "total": 0.9847,
+   "run_s": 1354.3
+  },
+  "19": {
+   "straight": 0.0033,
+   "moving": 0.9821,
+   "reflected": 0.0001,
+   "total": 0.9855,
+   "run_s": 1480.2
+  }
+ }
+}

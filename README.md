@@ -54,28 +54,59 @@ camera alone is not enough.
 | same, coupling length 35 % long | 283 of 441 | 2.7 x |
 
 With the calibrated design the two brightness groups do not overlap: the dimmest
-bright pixel is 0.568 and the brightest dark pixel is 0.166, both in units of
-the input power. One row leaks into its neighbour by 21.9 dB, and into rows
-three or more away by 28.2 dB.
+bright pixel is 0.568 and the brightest dark pixel is 0.166, both in units of the
+input power. A single threshold separates them, so the readout needs no
+per-pixel calibration.
+
+**Loss.** Each row leaves 98.6 % of its input power in its two output waveguides:
+1.45 % lost along 452 micrometres, or 0.063 dB, of which less than 0.01 % comes
+back as reflection. The worst of the twenty rows is 0.065 dB
+(`data/port_powers.json`).
+
+**Crosstalk.** One addressed row leaks 21.9 dB down into the row beside it, and
+28.2 dB down into rows three or more away (`data/tile_crosstalk_from_map.json`).
+
+**When the coupling length is wrong.** A device is only interesting if it
+survives fabrication. The same image is shown below at the calibrated length and
+with the coupling section 35 % too long:
 
 ![The same image, calibrated and 35 % off](figures/fig3_degraded.png)
 
 *Both panels are pixel maps of the same 21 by 21 image, on one colour scale.
-Left: the coupling section at its calibrated length, 441 of 441 pixels correct,
-contrast 80.8 times. Right: the same device with the coupling section 35 % too
-long, 283 of 441 pixels correct, contrast 2.7 times. The 35 % run is a reference
-for what failure looks like; it is not a specification.*
+Left: the image as drawn. Right: the pixels that come back when the coupling
+section is 35 % too long, 283 of 441 correct, contrast 2.7 times. This run is a
+reference for what failure looks like; it is not a specification.*
 
-The pixel maps are used here, and only here, because these two states have to be
-compared on one scale. The near field of figure 2 already shows the image without
-any such processing.
+The same comparison on the field itself, on one scale:
 
-The design rule we state, and do not claim to have validated: the critical
-dimension may be off by about 23.3 divided by the number of exchanges in the row,
-in nanometres, before that row starts to read wrong. It is a rule of thumb taken
-from two calibration runs, not a prediction. The 35 % run is far outside its
-range; it is there as a reference for what failure looks like, not as a
-specification.
+![The same field, calibrated and 35 % off](figures/fig4_field_compare.png)
+
+*Left: the calibrated run, taken as the reference. Right: the coupling section
+35 % too long. Only the straight waveguide is kept, as in figure 2, so the image
+can be read in both. The loss of contrast is in the data, not in the drawing.*
+
+## Tolerance
+
+How far may the critical dimension drift before a row stops reading? Each
+exchange is half a beat of coupling, so an error in the dimension becomes a phase
+error, and the phase errors of a row add up. Counting them gives the curve below:
+
+![Tolerance against critical-dimension error](figures/fig5_tolerance.png)
+
+*Left: contrast of one row against critical-dimension error, for rows that make
+3, 6, 8 and 10 exchanges. Right: the error at which the contrast falls to 2, as a
+function of the number of exchanges.*
+
+The result is a rule of thumb, **not a validated prediction**:
+
+> the critical dimension may be off by about **40.8 / N nanometres**, where N is
+> the number of exchanges in that row, before the row's contrast falls to 2.
+
+The two levels and the contrast at zero error (34 times) are measured; the shape
+of the curve is geometry. Nothing here was checked against a device built to a
+known error, and the 40.8 is not offered as a guarantee — only as the simplest
+statement of what the geometry says. `python plot_tolerance.py` recomputes it
+from `data/readout_dino.npz` in under a second.
 
 ## Reproduce it
 
@@ -101,10 +132,12 @@ An image is a text file, one line per row, `#` for a bright pixel and `.` for a
 dark one. `images/example.txt` is the 20 by 20 image used throughout;
 `images/smile.txt` is the 21 by 21 one.
 
-Figures 2 and 3 are drawn from the shipped data by:
+Figures 2 to 5 are drawn from the shipped data by:
 
     python plot_field_pair.py
-    python make_figure.py smile smile_e350 --out figures/fig3_degraded.png
+    python make_figure.py ideal smile_e350 --out figures/fig3_degraded.png
+    python plot_field_compare.py
+    python plot_tolerance.py
 
 ## Simulate a row
 
@@ -128,6 +161,8 @@ number. The window and the threshold are in `parameters.json`.
     encode_image.py      image -> polygons
     plot_geometry.py     polygons -> the layout figure
     plot_field_pair.py   two images -> figure 2
+    plot_field_compare.py  calibrated against 35 % off -> figure 4
+    plot_tolerance.py    the tolerance curve -> figure 5
     simulate_row.py      polygons -> one row of a wave simulation
     read_image.py        simulated data -> pixel values
     make_figure.py       the same image in two states, figure 3

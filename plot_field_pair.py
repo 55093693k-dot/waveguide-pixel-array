@@ -22,11 +22,12 @@ import read_image as RI                                       # noqa: E402
 P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8"))
 PITCH = P["pixel"]["row_pitch_um"]
 CELL = P["pixel"]["total_um"]
+PAD = P["pixel"]["pad_um"]
 DATA = HERE / "data"
 FIG = HERE / "figures"
 
 IMAGES = ("dino", "smile")
-FILES = {"dino": "example.txt", "smile": "smile.txt"}
+FILES = {"dino": "example.txt", "smile": "smile.txt", "smile_e350": "smile.txt"}
 
 
 def load(name):
@@ -36,24 +37,50 @@ def load(name):
     return z["I"], z["x"], z["y"], rows
 
 
-def lanes(field, y_um, n_rows):
-    """Where the display waveguide of each row sits, found from the data.
-
-    The assembled field is stitched from per-row runs, so the row grid carries a
-    small offset. Rather than assume where a row is, take the highest peak of the
-    mean profile inside that row's neighbourhood: the straight waveguide is
-    always the upper member of the pair.
-    """
+def peaks_in(field, y_um, lo, hi, thr=0.03):
+    """Local maxima of the mean profile between two y values."""
     profile = field.mean(axis=0)
-    found = []
+    band = (y_um >= lo) & (y_um <= hi)
+    yy, ss = y_um[band], profile[band]
+    idx = [j for j in range(1, len(ss) - 1)
+           if ss[j] >= ss[j - 1] and ss[j] >= ss[j + 1] and ss[j] > thr]
+    groups = []
+    for j in idx:
+        if groups and yy[j] - yy[groups[-1][0]] < 0.25:
+            if ss[j] > ss[groups[-1][0]]:
+                groups[-1] = [j]
+        else:
+            groups.append([j])
+    return sorted((float(yy[g[0]]), float(ss[g[0]])) for g in groups)
+
+
+def lanes(field, y_um, n_rows):
+    """Where the display waveguide of each row sits.
+
+    The straight waveguide is the upper member of each pair. When a row is dark
+    its straight waveguide carries almost nothing, so only the other one shows a
+    peak; that row's position is then taken from the spacing measured on the rows
+    where both peaks are visible. Picking the bright peak instead would read that
+    row's pattern inverted, which is exactly the mistake this guard prevents.
+    """
+    found, spacings = [], []
     for i in range(n_rows):
         guess = (n_rows - 1 - i) * PITCH
-        band = (y_um >= guess - 1.8) & (y_um <= guess + 1.2)
-        yy, ss = y_um[band], profile[band]
-        peaks = [j for j in range(1, len(ss) - 1)
-                 if ss[j] >= ss[j - 1] and ss[j] >= ss[j + 1] and ss[j] > 0.05]
-        found.append(float(yy[max(peaks)]) if peaks else guess + 0.45)
-    return found
+        peaks = peaks_in(field, y_um, guess - 1.8, guess + 1.2)
+        found.append(peaks)
+        if len(peaks) >= 2:
+            spacings.append(peaks[-1][0] - peaks[-2][0])
+
+    step = float(np.median(spacings)) if spacings else 0.30
+    out = []
+    for peaks in found:
+        if len(peaks) >= 2:
+            out.append(peaks[-1][0])
+        elif len(peaks) == 1:
+            out.append(peaks[0][0] + step)
+        else:
+            out.append(float("nan"))
+    return out
 
 
 def display_only(field, y_um, centres):
@@ -71,16 +98,39 @@ def readout(name, rows):
     return RI.assemble(DATA / ("readout_%s.npz" % name), rows)
 
 
+def check(field, y_um, centres, rows, x_um):
+    """Read each row back and report any row whose pattern is inverted.
+
+    This is the guard for the mistake described in lanes(): if a row comes back
+    anticorrelated with the image, the wrong waveguide was kept.
+    """
+    truth = RI.truth_matrix(rows)
+    bad = []
+    for i, centre in enumerate(centres):
+        band = (y_um >= centre - 0.15) & (y_um <= centre + 0.15)
+        values = np.array([
+            field[np.ix_((x_um >= PAD + (c + 0.5) * CELL - 8.0) &
+                         (x_um <= PAD + (c + 0.5) * CELL + 8.0), band)].mean()
+            for c in range(len(rows[0]))])
+        r = float(np.corrcoef(values, truth[i])[0, 1])
+        if r < 0:
+            bad.append((i, round(r, 2)))
+    return bad
+
+
 def main():
-    fig, axes = plt.subplots(2, 2, figsize=(12.0, 9.0))
-    fig.subplots_adjust(left=0.08, right=0.985, top=0.93, bottom=0.17,
-                        hspace=0.28, wspace=0.20)
+    fig, axes = plt.subplots(2, 2, figsize=(11.0, 11.0))
+    fig.subplots_adjust(left=0.09, right=0.97, top=0.94, bottom=0.10,
+                        hspace=0.22, wspace=0.22)
 
     loaded = [load(name) for name in IMAGES]
 
     for row, (name, (field, x, y, rows)) in enumerate(zip(IMAGES, loaded)):
         x_um, y_um = x * 1e6, y * 1e6
-        single = display_only(field, y_um, lanes(field, y_um, len(rows)))
+        centres = lanes(field, y_um, len(rows))
+        bad = check(field, y_um, centres, rows, x_um)
+        print("%-6s lanes %d, inverted rows %s" % (name, len(centres), bad or "none"))
+        single = display_only(field, y_um, centres)
 
         ax = axes[row][0]
         im0 = ax.imshow(field.T, origin="lower", cmap="inferno", vmin=0.0,
@@ -97,6 +147,7 @@ def main():
         ax.set_title("straight waveguide only" if row == 0 else "", fontsize=10)
 
         for ax in (axes[row][0], axes[row][1]):
+            ax.set_box_aspect(1)
             ax.set_xlabel("x (um)", fontsize=9)
             ax.tick_params(labelsize=8)
         axes[row][0].set_ylabel("%d by %d image\ny (um)" % (len(rows), len(rows)),
@@ -117,5 +168,6 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 

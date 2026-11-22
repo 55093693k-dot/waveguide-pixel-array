@@ -74,6 +74,24 @@ def main():
     check("worst neighbour, one row away, dB", adjacent, -21.9, 0.1)
     check("worst neighbour, three rows away, dB", far, -28.2, 0.1)
 
+    print("what each row loses")
+    ports = json.loads((DATA / "port_powers.json").read_text(encoding="utf-8"))["rows"]
+    totals = np.array([row["total"] for row in ports.values()])
+    check("rows in the loss record", len(totals), 20, 0)
+    check("mean power out, of the input", totals.mean(), 0.9855, 5e-4)
+    check("loss, dB", -10 * np.log10(totals.mean()), 0.063, 5e-4)
+
+    print("how far the critical dimension may drift")
+    import plot_tolerance as PT
+    bright, dark = PT.levels()
+    check("bright level", bright, 0.6700, 5e-4)
+    check("dark level", dark, 0.0197, 5e-4)
+    grid = np.linspace(0.0, 40.0, 801)
+    ns = np.arange(2, 13)
+    tol = np.array([PT.crossing(bright, dark, int(n), grid) for n in ns])
+    rule = float(np.exp(np.mean(np.log(tol * ns))))
+    check("tolerance coefficient, nm", rule, 40.8, 0.1)
+
     print("")
     if FAILED:
         print("FAILED: %s" % ", ".join(FAILED))
