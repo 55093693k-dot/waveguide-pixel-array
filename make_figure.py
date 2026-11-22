@@ -5,7 +5,7 @@ state. All panels share one colour scale, so a loss of contrast shows up as a
 loss of contrast instead of being normalised away.
 
 Usage
-    python make_figure.py                                  # calibrated, +35 %
+    python make_figure.py                                  # ideal, +35 %
     python make_figure.py smile smile_e350 --out figures/fig3_degraded.png
 
 Counts of wrong pixels belong in the caption, not in the panel title.
