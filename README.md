@@ -33,13 +33,14 @@ leaves it on whichever of the two waveguides the pixel value asks for. The 20 by
 is 452 micrometres wide. The 21 by 21 image covers 441 by 50.4 and its device is
 473 wide. The extra 32 micrometres are access at the two ends.
 
-![The layout the encoder produces](figures/fig1_layout_v4.png)
+![The layout the encoder produces](figures/fig1_layout_v5.png)
 
-*Top: the whole device. Bottom: five units of the first row, where the image
-changes twice. Both vertical axes are stretched, so a 0.3-micrometre waveguide is
-visible against a 2.4-micrometre row spacing. Where the image stays the same the
-two waveguides stay apart; where it changes, the moving waveguide is pulled in to
-the coupling gap and the light changes waveguide.*
+*Top: the whole device. Bottom: one exchange unit, cut where the light changes
+waveguide. In red: the light enters on the moving waveguide and leaves on the
+straight one. Both vertical axes are stretched, so a 0.3-micrometre waveguide is
+visible against a 2.4-micrometre row spacing. The dotted lines mark one unit, 21
+micrometres; in a unit where the image does not change, the two waveguides simply
+stay apart and the light keeps to the same one.*
 
 The figure is drawn from the file that `encode_image.py` writes, so it always
 shows what the encoder actually produced.
@@ -149,7 +150,7 @@ waveguides of every row, in micrometres. It needs numpy only.
 
     python plot_geometry.py
 
-then draws that file and writes `figures/fig1_layout_v4.png`, the figure at the
+then draws that file and writes `figures/fig1_layout_v5.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
@@ -219,6 +220,7 @@ Chan King Ho.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 
