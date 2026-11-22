@@ -76,10 +76,10 @@ def main():
     x0 = PAD + k * CELL - BEND / 2.0 - x_half   # cut the period where the exchange starts
     draw_row(ax2, row, 0.0)
     ax2.set_xlim(x0 - 5.0, x0 + CELL + 5.0)
-    ax2.set_ylim(-1.40, 0.86)
+    ax2.set_ylim(-1.40, 0.70)
     ax2.set_aspect("auto")
     for edge in (x0, x0 + CELL):
-        ax2.axvline(edge, color="0.55", lw=0.9, ls=":")
+        ax2.axvline(edge, color="black", lw=1.0, ls="--")
     ax2.set_xlabel("x (um)")
     ax2.set_ylabel("y (um)")
     ax2.set_title("one exchange unit", fontsize=10)
@@ -112,13 +112,6 @@ def main():
     red_text(x0 + 0.5 * CELL + 1.4, 0.5 * (y_rest + y_straight) - 0.02, "exchange",
              ha="left")
 
-    # the width of the unit, above everything
-    ax2.annotate("", xy=(x0, 0.60), xytext=(x0 + CELL, 0.60),
-                 arrowprops=dict(arrowstyle="<->", color="0.25", lw=1.3,
-                                 shrinkA=2, shrinkB=2))
-    ax2.text(x0 + 0.5 * CELL, 0.72, "%.0f um" % CELL, fontsize=9, ha="center",
-             va="bottom", color="0.2")
-
     handles = [Patch([(0, 0), (1, 0), (1, 1)], facecolor=COLOURS[k],
                      label=k + " waveguide")
                for k in ("straight", "moving")]
@@ -127,16 +120,17 @@ def main():
 
     fig.suptitle("Layout of the encoded image", fontsize=10, y=0.995)
 
-    out = HERE / "figures" / "fig1_layout_v5.png"
+    out = HERE / "figures" / "fig1_layout_v6.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches="tight")
-    print("written: figures/fig1_layout_v5.png  (%d rows, %d by %d pixels)"
+    print("written: figures/fig1_layout_v6.png  (%d rows, %d by %d pixels)"
           % (geo["rows"], geo["rows"], geo["columns"]))
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 
 
