@@ -54,7 +54,7 @@ def main():
     fig.colorbar(im, cax=bar, orientation="horizontal", label="intensity")
     bar.tick_params(labelsize=8)
 
-    out = FIG / "fig4_field_compare.png"
+    out = FIG / "fig4_field_compare_v2.png"
     fig.savefig(out, dpi=150, bbox_inches="tight")
     print("written: %s" % out)
     return 0
@@ -62,4 +62,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 

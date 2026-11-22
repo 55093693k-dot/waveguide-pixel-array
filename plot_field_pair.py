@@ -26,7 +26,7 @@ PAD = P["pixel"]["pad_um"]
 DATA = HERE / "data"
 FIG = HERE / "figures"
 
-IMAGES = ("dino", "smile")
+IMAGES = ("dino", "smile_e083")
 FILES = {"dino": "example.txt", "smile": "smile.txt",
          "smile_e083": "smile.txt", "smile_e350": "smile.txt"}
 
@@ -167,7 +167,7 @@ def main():
     fig.colorbar(im1, cax=bar1, orientation="horizontal", label="intensity")
     bar1.tick_params(labelsize=8)
 
-    out = FIG / "fig2_field.png"
+    out = FIG / "fig2_field_v2.png"
     fig.savefig(out, dpi=150, bbox_inches="tight")
     print("written: %s" % out)
     return 0
@@ -175,6 +175,7 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 
 

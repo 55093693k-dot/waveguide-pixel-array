@@ -1,4 +1,4 @@
-"""plot_tolerance.py -- how far the critical dimension may drift.
+﻿"""plot_tolerance.py -- how far the critical dimension may drift.
 
 One image is built from N exchanges. Each exchange is a half beat of coupling,
 so an error in the critical dimension turns into a phase error that accumulates
@@ -102,7 +102,7 @@ def main():
     ax.grid(alpha=0.25, lw=0.5)
 
     fig.tight_layout()
-    out = FIG / "fig5_tolerance.png"
+    out = FIG / "fig5_tolerance_v2.png"
     fig.savefig(out, dpi=150, bbox_inches="tight")
     print("written: %s" % out)
 
@@ -120,3 +120,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
