@@ -5,6 +5,15 @@ A coupled-waveguide pixel array for near-field image encoding.
 A binary image is written into a photonic chip as the transverse position of
 guided light. The image is read by looking at the near field above the chip.
 
+Electronic chips have carried small pictures for decades: a dragon, a mascot, a
+signature, drawn into the metal. Those pictures are part of the layout, so a
+microscope shows them and nothing else is needed.
+
+This repository is the same idea with the picture taken out of the layout. The
+chip holds only waveguides. The picture is written into which waveguide the light
+is using, and it appears when light is coupled in and the near field is imaged.
+Nothing on the chip looks like the picture.
+
 ![Two images and what comes out of them](figures/fig2_field_v2.png)
 
 *Top row: a 20 by 20 image. Bottom row: a 21 by 21 image. Left: the simulated
@@ -195,6 +204,10 @@ not included.
 - The design rule is for one wavelength, 1550 nanometres.
 - The image is fixed at fabrication. A different image needs a different layout.
 - Reading the image needs near-field or high-numerical-aperture imaging.
+
+## Author
+
+Chan King Ho.
 
 ## Licence
 

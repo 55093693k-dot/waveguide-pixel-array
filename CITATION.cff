@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: If you use this work, please cite it as below.
+title: >-
+  waveguide-pixel-array: a coupled-waveguide pixel array for near-field image
+  encoding
+authors:
+  - family-names: Chan
+    given-names: King Ho
+type: software
+license: MIT
+repository-code: https://github.com/55093693k-dot/waveguide-pixel-array
+abstract: >-
+  A binary image is written into a photonic chip as the transverse position of
+  guided light in a pair of coupled waveguides, and read back by imaging the near
+  field above the chip. All 400 pixels of a 20 by 20 image and all 441 pixels of a
+  21 by 21 image read out correctly with a single threshold.
+keywords:
+  - silicon photonics
+  - near-field imaging
+  - image encoding
+  - coupled waveguides

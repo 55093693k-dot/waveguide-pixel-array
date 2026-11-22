@@ -107,6 +107,8 @@ def field_map(folder, image_rows):
     for js in sorted(Path(folder).glob("*.json")):
         # utf-8-sig: a hand-edited record on Windows often carries a byte-order mark.
         rec = json.loads(js.read_text(encoding="utf-8-sig"))
+        if not isinstance(rec, dict):
+            continue
         rows = rec.get("art_rows")
         if not rows:
             continue
@@ -164,6 +166,13 @@ def main(argv):
     rows = load_image(image)
     truth = truth_matrix(rows)
     values = assemble(source, rows)
+
+    if not np.isfinite(values).any():
+        print("no pixel values found in %s" % source)
+        print("point this at a readout array (data/readout_*.npz), or at a folder "
+              "holding one record per simulated row, each with an art_rows field "
+              "next to its _map.npz")
+        return 2
 
     if "--row" in argv:
         r = int(argv[argv.index("--row") + 1])
