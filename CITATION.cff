@@ -10,7 +10,9 @@ authors:
     affiliation: Department of Physics, The Hong Kong University of Science and Technology, Hong Kong
 type: software
 license: MIT
-doi: 10.5281/zenodo.24435613
+doi: 10.5281/zenodo.24437390
+version: 1.0.2
+date-released: 2026-11-22
 repository-code: https://github.com/55093693k-dot/waveguide-pixel-array
 abstract: >-
   A binary image is written into a photonic chip as the transverse position of
