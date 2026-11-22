@@ -93,6 +93,38 @@ def moving_centreline(n_pix, flips):
     return x, y_rest + (y_coupled - y_rest) * weight, y_rest, y_coupled
 
 
+def simplify(x, y, tol=2e-4):
+    """Keep only the points that carry the shape.
+
+    The centreline is sampled densely so that the ramp is smooth. Most of those
+    samples sit on a straight line and add nothing but file size. This drops every
+    point that is within tol of the chord across it, so the ramp keeps its shape
+    and the flat runs keep two points.
+    """
+    keep = np.zeros(len(x), dtype=bool)
+    keep[0] = keep[-1] = True
+    stack = [(0, len(x) - 1)]
+    while stack:
+        i, j = stack.pop()
+        if j <= i + 1:
+            continue
+        dx, dy = x[j] - x[i], y[j] - y[i]
+        span = np.hypot(dx, dy)
+        inner = slice(i + 1, j)
+        if span == 0.0:
+            distance = np.abs(y[inner] - y[i])
+        else:
+            distance = np.abs(dy * (x[inner] - x[i]) - dx * (y[inner] - y[i])) / span
+        if distance.size == 0:
+            continue
+        k = int(np.argmax(distance))
+        if distance[k] > tol:
+            keep[i + 1 + k] = True
+            stack.append((i, i + 1 + k))
+            stack.append((i + 1 + k, j))
+    return x[keep], y[keep]
+
+
 def row_polygons(row, index):
     """Both waveguides of one row, as polygons in micrometres.
 
@@ -113,6 +145,7 @@ def row_polygons(row, index):
 
     flips = exchanges(row)
     x, y, y_rest, y_coupled = moving_centreline(len(row), flips)
+    x, y = simplify(x, y)
 
     # The access at both ends must sit on the rest position, or the port would
     # launch light beside the waveguide.
