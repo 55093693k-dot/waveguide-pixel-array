@@ -138,7 +138,7 @@ dark one. `images/example.txt` is the 20 by 20 image used throughout;
 Figures 2 to 5 are drawn from the shipped data by:
 
     python plot_field_pair.py
-    python make_figure.py ideal smile_e083 smile_e350 --out figures/fig3_degraded.png
+    python make_figure.py ideal smile_e350 --out figures/fig3_degraded.png
     python plot_field_compare.py
     python plot_tolerance.py
 
@@ -164,7 +164,7 @@ number. The window and the threshold are in `parameters.json`.
     encode_image.py      image -> polygons
     plot_geometry.py     polygons -> the layout figure
     plot_field_pair.py   two images -> figure 2
-    plot_field_compare.py  calibrated against 35 % off -> figure 4
+    plot_field_compare.py  the reference against 35 % off -> figure 4
     plot_tolerance.py    the tolerance curve -> figure 5
     simulate_row.py      polygons -> one row of a wave simulation
     read_image.py        simulated data -> pixel values
