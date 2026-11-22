@@ -14,7 +14,7 @@ chip holds only waveguides. The picture is written into which waveguide the ligh
 is using, and it appears when light is coupled in and the near field is imaged.
 Nothing on the chip looks like the picture.
 
-![Two images and what comes out of them](figures/fig2_field_v2.png)
+![Two images and what comes out of them](figures/fig2_field.png)
 
 *Top row: a 20 by 20 image. Bottom row: a 21 by 21 image. Left: the simulated
 near field, both waveguides. Right: the same field with everything but the
@@ -35,19 +35,19 @@ micrometres; its device is 452 micrometres wide. The 21 by 21 image covers 441 b
 50.4 and its device is 473 wide. The extra 32 micrometres are access at the two
 ends.
 
-![The layout the encoder produces](figures/fig1_layout_v7.png)
+![The layout the encoder produces](figures/fig1_layout.png)
 
-*Top: the whole device (Using Dinosaur as an example). Bottom: one exchange unit, with the exchange itself in
-the middle of the panel. Red: light entering on the moving waveguide leaves on the
-straight one. Green: the same unit used the other way round — the light enters on
-the straight waveguide and leaves on the moving one. That is what reciprocity
-means here: the unit does not care which side the light comes from. Both vertical
-axes are stretched, so a 0.3-micrometre waveguide is visible against a
-2.4-micrometre row spacing. The two black dashed lines stand one pixel apart, 21
-micrometres along the row. Across the row a pixel is only 2.4 micrometres, so a
-pixel is a long thin cell, 21 by 2.4. Where the image does not change, none of
-this happens: the two waveguides simply run straight and the light keeps to the
-same one.*
+*Top: the whole device (using the dinosaur as an example). Bottom: one exchange
+unit, with the exchange itself in the middle of the panel. Red: light entering on
+the moving waveguide leaves on the straight one. Green: the same unit used the
+other way round — the light enters on the straight waveguide and leaves on the
+moving one. That is what reciprocity means here: the unit does not care which side
+the light comes from. Both vertical axes are stretched, so a 0.3-micrometre
+waveguide is visible against a 2.4-micrometre row spacing. The two black dashed
+lines stand one pixel apart, 21 micrometres along the row. Across the row a pixel
+is only 2.4 micrometres, so a pixel is a long thin cell, 21 by 2.4. Where the image
+does not change, none of this happens: the two waveguides simply run straight and
+the light keeps to the same one.*
 
 The figure is drawn from the file that `encode_image.py` writes, so it always
 shows what the encoder actually produced.
@@ -98,7 +98,7 @@ own output (`data/tile_crosstalk_from_map.json`).
 **When the coupling length is wrong.** A device is only interesting if it
 survives fabrication. The same image is shown below at three coupling lengths:
 
-![The same image at two coupling lengths](figures/fig3_degraded_v2.png)
+![The same image at two coupling lengths](figures/fig3_degraded.png)
 
 *Left: the image as drawn, one level for a bright pixel and one for a dark one.
 Right: 10.8 micrometres, 35 % too long. Both panels share one colour scale, in
@@ -110,7 +110,7 @@ reference for what failure looks like, not a specification.*
 
 The same two states as field maps, on one scale:
 
-![The same field at two coupling lengths](figures/fig4_field_compare_v2.png)
+![The same field at two coupling lengths](figures/fig4_field_compare.png)
 
 *Left: the reference device. Right: 35 % too long. Only the straight waveguide is
 kept, as in figure 2, so the image can be read in both. The right panel's rows are
@@ -122,7 +122,7 @@ How far may the critical dimension drift before a row stops reading? Each
 exchange is half a beat of coupling, so an error in the dimension becomes a phase
 error, and the phase errors of a row add up. Counting them gives the curve below:
 
-![Tolerance against critical-dimension error](figures/fig5_tolerance_v2.png)
+![Tolerance against critical-dimension error](figures/fig5_tolerance.png)
 
 *Left: contrast of one row against critical-dimension error, for rows that make
 3, 6, 8 and 10 exchanges. Right: the error at which the contrast falls to 2, as a
@@ -157,7 +157,7 @@ waveguides of every row, in micrometres. It needs numpy only.
 
     python plot_geometry.py
 
-then draws that file and writes `figures/fig1_layout_v7.png`, the figure at the
+then draws that file and writes `figures/fig1_layout.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
@@ -167,7 +167,7 @@ dark one. `images/example.txt` is the 20 by 20 image of figure 2;
 Figures 2 to 5 are drawn from the shipped data by:
 
     python plot_field_pair.py
-    python make_figure.py ideal smile_e350 --out figures/fig3_degraded_v2.png
+    python make_figure.py ideal smile_e350 --out figures/fig3_degraded.png
     python plot_field_compare.py
     python plot_tolerance.py
 
@@ -201,15 +201,14 @@ number. The window and the threshold are in `parameters.json`.
     reproduce.py         every quoted number, from data/
     parameters.json      every dimension, in one place
     images/              two images
-    data/                pixel values and port powers behind the figures
+    data/                the numbers and fields behind the figures
     figures/             the figures
-    checks/              scripts used to look for weak rows and crosstalk
 
 Every dimension the encoder and the simulation use is in `parameters.json`.
 
-`data/` holds the per-pixel values, the port powers, the two assembled fields
-behind figure 2, and the geometry that was simulated
-(`geometry_20x20_simulated.json`). The fields there are decimated by two for display,
+`data/` holds the per-pixel values, the port powers, the assembled fields behind
+figures 2 and 4, and the geometry that was simulated
+(`geometry_20x20_simulated.json`). The fields are decimated by two for display,
 about 1.3 MB each; the per-row field dumps they came from are 28 MB each and are
 not included.
 
@@ -227,6 +226,7 @@ Chan King Ho.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 

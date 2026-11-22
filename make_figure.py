@@ -6,7 +6,7 @@ loss of contrast instead of being normalised away.
 
 Usage
     python make_figure.py                                  # ideal, +35 %
-    python make_figure.py ideal smile_e350 --out figures/fig3_degraded_v2.png
+    python make_figure.py ideal smile_e350 --out figures/fig3_degraded.png
 
 Counts of wrong pixels belong in the caption, not in the panel title.
 """
@@ -49,7 +49,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("prefix", nargs="*", default=["ideal", "smile_e350"])
     ap.add_argument("--image", default=str(HERE / "images" / "smile.txt"))
-    ap.add_argument("--out", default=str(FIG / "fig3_degraded_v2.png"))
+    ap.add_argument("--out", default=str(FIG / "fig3_degraded.png"))
     args = ap.parse_args(argv)
 
     rows = RI.load_image(args.image)
@@ -96,5 +96,6 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 

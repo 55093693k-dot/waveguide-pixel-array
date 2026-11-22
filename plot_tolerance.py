@@ -103,7 +103,7 @@ def main():
     ax.grid(alpha=0.25, lw=0.5)
 
     fig.tight_layout()
-    out = FIG / "fig5_tolerance_v2.png"
+    out = FIG / "fig5_tolerance.png"
     fig.savefig(out, dpi=150, bbox_inches="tight")
     print("written: %s" % out)
 
@@ -121,4 +121,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
