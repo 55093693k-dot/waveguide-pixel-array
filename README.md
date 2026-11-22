@@ -50,16 +50,24 @@ bright pixel is 0.568 and the brightest dark pixel is 0.166, both in units of
 the input power. One row leaks into its neighbour by 21.9 dB, and into rows
 three or more away by 28.2 dB.
 
-For the 20 by 20 image, the near field looks like this:
+![Target and measured pixel values](figures/fig3_readout.png)
 
-![Near field of the encoded image](figures/fig2_readout.png)
+*Left: the image that was encoded. Right: the pixel values that come back out of
+the simulation, for the same 20 by 20 pixels. The two panels share one colour
+scale, so the count of correct pixels can be checked by eye without the contrast
+being normalised away. The measured values sit below 1.0 because a bright pixel
+in the target is drawn as 1.0 while a measured bright pixel is 0.6 to 0.7 of the
+input power.*
 
-*Bright and dark pixels on the straight waveguide, one row per line. The image
-is stretched vertically so that 20 rows fit on a page; the physical size is 420
-by 48 micrometres.*
+The full near field, both waveguides, is `figures/fig2_pattern.png`; the layout
+of the same image is `figures/fig0_geometry.png`.
 
-The full near field, with both waveguides, is in `figures/fig2_pattern.png`.
-The layout of the same image is `figures/fig0_geometry.png`.
+The design rule we state, and do not claim to have validated: the critical
+dimension may be off by about 23.3 divided by the number of exchanges in the row,
+in nanometres, before that row starts to read wrong. It is a rule of thumb taken
+from two calibration runs, not a prediction. The 35 % run is far outside its
+range; it is there as a reference for what failure looks like, not as a
+specification.
 
 ## Reproduce it
 
@@ -85,7 +93,10 @@ An image is a text file, one line per row, `#` for a bright pixel and `.` for a
 dark one. `images/example.txt` is the 20 by 20 image used throughout;
 `images/smile.txt` is the 21 by 21 one.
 
-![One pixel: two waveguides and one exchange](figures/fig1_pixel.png)
+Figures 3 and 4 are drawn from the shipped data by:
+
+    python make_figure.py dino --image images/example.txt --out figures/fig3_readout.png
+    python make_figure.py smile_e350 --image images/smile.txt --out figures/fig4_degraded.png
 
 ## Simulate a row
 
@@ -110,7 +121,7 @@ number. The window and the threshold are in `parameters.json`.
     plot_geometry.py     polygons -> the layout figure
     simulate_row.py      polygons -> one row of a wave simulation
     read_image.py        simulated data -> pixel values
-    make_figure.py       Figure 4 from the shipped data
+    make_figure.py       target against measurement, figures 3 and 4
     reproduce.py         every quoted number, from data/
     parameters.json      every dimension, in one place
     images/              two images
