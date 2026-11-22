@@ -1,0 +1,62 @@
+{
+ "unit": "um",
+ "lane_split_y": 0.0,
+ "mask_rule": {
+  "A": "y > 0",
+  "B": "y < 0"
+ },
+ "width": 0.3,
+ "A": {
+  "center_y": 0.25,
+  "core": [
+   0.1,
+   0.4
+  ],
+  "read_band": [
+   -0.05,
+   0.55
+  ]
+ },
+ "B": {
+  "rest_center_y": -0.8763,
+  "coupled_center_y": -0.25,
+  "core_rest": [
+   -1.0263,
+   -0.7263
+  ],
+  "core_coupled": [
+   -0.4,
+   -0.1
+  ],
+  "read_band_rest": [
+   -1.1763,
+   -0.5763
+  ],
+  "read_band_coupled": [
+   -0.55,
+   0.05
+  ],
+  "full_span": [
+   -1.1763,
+   0.05
+  ]
+ },
+ "pixel": {
+  "cell": 21.0,
+  "l_bend": 5.0,
+  "l_act": 10.8,
+  "l_flat": 5.2,
+  "pad": 16.0,
+  "pitch_row": 2.4,
+  "shape": "smooth",
+  "supp": 200.0,
+  "l_act_cal": 8.0
+ },
+ "convention": {
+  "start_bit": "0",
+  "source_port": "pB_in",
+  "display_lane": "A",
+  "hidden_lane": "B"
+ },
+ "note": "A = display/straight lane; B = hidden/bent lane. Mask B with y<0 to show the image."
+}

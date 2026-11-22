@@ -1,0 +1,9 @@
+out/
+__pycache__/
+*.pyc
+
+# internal working notes, never shipped
+00_management/
+05_internal/
+06_ring_idea/
+PACKAGE_README.md

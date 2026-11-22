@@ -1,0 +1,58 @@
+{
+  "note": "Every dimension the encoder and the simulation use lives here. Units are micrometres unless a key says nm. All values are lengths or refractive indices; no value is fitted to a result.",
+
+  "optical": {
+    "wavelength_um": 1.55,
+    "n_core": 3.48,
+    "n_background": 1.45,
+    "slab_thickness_um": 0.22,
+    "material": "Si (Silicon) - Palik"
+  },
+
+  "waveguide": {
+    "width_um": 0.30,
+    "gap_coupled_um": 0.20,
+    "gap_rest_um": 0.8263,
+    "gap_rest_note": "= gap_coupled + ln(suppression) / gamma = 0.20 + ln(200)/8.46",
+    "suppression_ratio": 200.0,
+    "gamma_per_um": 8.46,
+    "kappa_ref_per_um": 0.0633,
+    "gap_ref_um": 0.30,
+    "kappa_measured_per_um": 0.1477,
+    "kappa_note": "0.1477 measured at width 0.30 and gap 0.20; it gives a half-beat length of 10.6 um, while the length actually used is 8.0"
+  },
+
+  "pixel": {
+    "bend_um": 5.0,
+    "active_um": 8.0,
+    "flat_um": 8.0,
+    "total_um": 21.0,
+    "total_note": "bend 5 + active 8 + flat 8 = 21",
+    "transition": "smooth",
+    "transition_note": "the bend into and out of the gap follows a raised-cosine ramp; a straight ramp gives a slope jump at both ends",
+    "pad_um": 16.0,
+    "row_pitch_um": 2.4
+  },
+
+  "mesh": {
+    "dx_um": 0.025,
+    "mesh_accuracy": 2,
+    "simulation_time_s": 8e-12,
+    "domain_height_um": 6.0,
+    "boundary": "PML"
+  },
+
+  "readout": {
+    "display_lane_offset_um": 0.25,
+    "x_half_window_um": 8.0,
+    "y_half_window_um": 0.10,
+    "threshold": 0.367,
+    "note": "a pixel is the mean of |E|^2 over +-8 um along the pixel and +-0.10 um across the straight waveguide, in units of the input power; 0.367 is midway between the dimmest bright pixel (0.568) and the brightest dark pixel (0.166)"
+  },
+
+  "image": {
+    "example": "images/example.txt",
+    "second": "images/smile.txt",
+    "format": "one line per row, '#' for a bright pixel, '.' for a dark one"
+  }
+}
