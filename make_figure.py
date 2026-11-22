@@ -1,15 +1,14 @@
-"""make_figure.py -- target against measurement, on one colour scale.
+"""make_figure.py -- one image, two states, side by side.
 
-Left: the image that was encoded. Right: the pixel values that come back out of
-the simulation. Both panels share one colour scale, so a loss of contrast shows
-up as a loss of contrast instead of being normalised away.
+Every panel is a pixel map of the same image, read out of a different simulated
+state. All panels share one colour scale, so a loss of contrast shows up as a
+loss of contrast instead of being normalised away.
 
 Usage
-    python make_figure.py dino --image images/example.txt --out figures/fig3_readout.png
-    python make_figure.py smile_e350 --image images/smile.txt --out figures/fig4_degraded.png
+    python make_figure.py                                  # calibrated, +35 %
+    python make_figure.py smile smile_e350 --out figures/fig3_degraded.png
 
-Numbers such as the count of wrong pixels belong in the caption, not in the
-panel title.
+Counts of wrong pixels belong in the caption, not in the panel title.
 """
 import argparse
 import sys
@@ -33,50 +32,48 @@ def label(prefix):
     """What the run was, in a few words."""
     if "_e" in prefix:
         return "+%g %% coupling length" % (int(prefix.split("_e")[1]) / 10.0)
-    return "measured"
+    return "calibrated"
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("prefix", nargs="?", default="smile_e350")
-    ap.add_argument("--image", default=None)
-    ap.add_argument("--out", default=None)
+    ap.add_argument("prefix", nargs="*", default=["smile", "smile_e350"])
+    ap.add_argument("--image", default=str(HERE / "images" / "smile.txt"))
+    ap.add_argument("--out", default=str(FIG / "fig3_degraded.png"))
     args = ap.parse_args(argv)
 
-    image = Path(args.image) if args.image else None
-    if image is None:
-        stem = args.prefix.split("_")[0]
-        image = HERE / "images" / (stem + ".txt")
-        if not image.exists():
-            image = HERE / "images" / "example.txt"
+    rows = RI.load_image(args.image)
+    truth = RI.truth_matrix(rows)
 
-    rows = RI.load_image(image)
-    ideal = RI.truth_matrix(rows)
-    values = RI.assemble(DATA / ("readout_%s.npz" % args.prefix), rows)
-    res = RI.report(values, ideal)
+    maps, results = [], []
+    for prefix in args.prefix:
+        values = RI.assemble(DATA / ("readout_%s.npz" % prefix), rows)
+        maps.append(values)
+        results.append(RI.report(values, truth))
+    vmax = max(0.7, max(float(np.nanpercentile(m, 99.5)) for m in maps))
 
-    fig, axes = plt.subplots(1, 2, figsize=(11.0, 5.4))
-    for ax, data, title in ((axes[0], ideal.astype(float), "target"),
-                            (axes[1], values, label(args.prefix))):
-        ax.imshow(data, cmap="inferno", vmin=0.0, vmax=1.0,
+    fig, axes = plt.subplots(1, len(maps), figsize=(5.6 * len(maps), 5.8))
+    axes = np.atleast_1d(axes)
+    for ax, values, prefix, res in zip(axes, maps, args.prefix, results):
+        ax.imshow(values, cmap="inferno", vmin=0.0, vmax=vmax,
                   interpolation="nearest", aspect="equal")
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_title(title, fontsize=10)
-        for k in range(1, ideal.shape[1]):
-            ax.axhline(k - 0.5, color="0.25", lw=0.3)
-            ax.axvline(k - 0.5, color="0.25", lw=0.3)
-    fig.colorbar(plt.cm.ScalarMappable(norm=Normalize(0.0, 1.0), cmap="inferno"),
-                 ax=axes.tolist(), fraction=0.028, pad=0.02,
+        ax.set_title(label(prefix), fontsize=10)
+        for k in range(1, truth.shape[1]):
+            ax.axhline(k - 0.5, color="0.35", lw=0.3)
+            ax.axvline(k - 0.5, color="0.35", lw=0.3)
+        print("%-14s %3d of %3d pixels correct, contrast %5.1f"
+              % (prefix, res["correct"], res["pixels"], res["contrast"]))
+
+    fig.colorbar(plt.cm.ScalarMappable(norm=Normalize(0.0, vmax), cmap="inferno"),
+                 ax=axes.tolist(), fraction=0.030, pad=0.02,
                  label="pixel value, shared scale")
 
-    out = Path(args.out) if args.out else FIG / ("fig_%s.png" % args.prefix)
+    out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches="tight")
     print("written: %s" % out)
-    print("  %d of %d pixels correct, dim bright %.3f, bright dark %.3f, contrast %.1f"
-          % (res["correct"], res["pixels"], res["dim_bright"] or 0.0,
-             res["bright_dark"] or 0.0, res["contrast"]))
     return 0
 
 

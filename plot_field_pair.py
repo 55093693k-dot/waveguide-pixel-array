@@ -36,17 +36,32 @@ def load(name):
     return z["I"], z["x"], z["y"], rows
 
 
-def display_only(field, y_um, n_rows):
-    """Keep the straight waveguide of every row; drop the rest.
+def lanes(field, y_um, n_rows):
+    """Where the display waveguide of each row sits, found from the data.
 
-    Row 0 of the image sits at the top of the field, so the row index runs
-    opposite to the y axis.
+    The assembled field is stitched from per-row runs, so the row grid carries a
+    small offset. Rather than assume where a row is, take the highest peak of the
+    mean profile inside that row's neighbourhood: the straight waveguide is
+    always the upper member of the pair.
     """
+    profile = field.mean(axis=0)
+    found = []
+    for i in range(n_rows):
+        guess = (n_rows - 1 - i) * PITCH
+        band = (y_um >= guess - 1.8) & (y_um <= guess + 1.2)
+        yy, ss = y_um[band], profile[band]
+        peaks = [j for j in range(1, len(ss) - 1)
+                 if ss[j] >= ss[j - 1] and ss[j] >= ss[j + 1] and ss[j] > 0.05]
+        found.append(float(yy[max(peaks)]) if peaks else guess + 0.45)
+    return found
+
+
+def display_only(field, y_um, centres):
+    """Keep the straight waveguide of every row; drop the rest."""
     out = np.array(field, copy=True)
     keep = np.zeros(len(y_um), dtype=bool)
-    for i in range(n_rows):
-        centre = (n_rows - 1 - i) * PITCH
-        keep |= (y_um >= centre + 0.05) & (y_um <= centre + 0.45)
+    for centre in centres:
+        keep |= (y_um >= centre - 0.15) & (y_um <= centre + 0.15)
     out[:, ~keep] = 0.0
     return out
 
@@ -65,21 +80,21 @@ def main():
 
     for row, (name, (field, x, y, rows)) in enumerate(zip(IMAGES, loaded)):
         x_um, y_um = x * 1e6, y * 1e6
+        single = display_only(field, y_um, lanes(field, y_um, len(rows)))
 
         ax = axes[row][0]
         im0 = ax.imshow(field.T, origin="lower", cmap="inferno", vmin=0.0,
                         vmax=float(np.percentile(field, 99.5)),
                         interpolation="bilinear", aspect="auto",
                         extent=[x_um[0], x_um[-1], y_um[0], len(rows) * PITCH])
-        ax.set_title("near field, both waveguides" if row == 0 else "", fontsize=10)
+        ax.set_title("both waveguides" if row == 0 else "", fontsize=10)
 
         ax = axes[row][1]
-        values = readout(name, rows)
-        im1 = ax.imshow(values, origin="upper", cmap="inferno", vmin=0.0,
-                        vmax=float(np.nanpercentile(values, 99.5)),
-                        interpolation="nearest", aspect="auto",
-                        extent=[0, len(rows[0]) * CELL, len(rows) * PITCH, 0])
-        ax.set_title("values read out" if row == 0 else "", fontsize=10)
+        im1 = ax.imshow(single.T, origin="lower", cmap="inferno", vmin=0.0,
+                        vmax=float(np.percentile(single, 99.5)),
+                        interpolation="bilinear", aspect="auto",
+                        extent=[x_um[0], x_um[-1], y_um[0], len(rows) * PITCH])
+        ax.set_title("straight waveguide only" if row == 0 else "", fontsize=10)
 
         for ax in (axes[row][0], axes[row][1]):
             ax.set_xlabel("x (um)", fontsize=9)
@@ -91,7 +106,7 @@ def main():
     fig.colorbar(im0, cax=bar0, orientation="horizontal", label="intensity")
     bar0.tick_params(labelsize=8)
     bar1 = fig.add_axes([0.56, 0.06, 0.38, 0.018])
-    fig.colorbar(im1, cax=bar1, orientation="horizontal", label="pixel value")
+    fig.colorbar(im1, cax=bar1, orientation="horizontal", label="intensity")
     bar1.tick_params(labelsize=8)
 
     out = FIG / "fig2_field.png"

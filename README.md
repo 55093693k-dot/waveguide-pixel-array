@@ -8,9 +8,11 @@ guided light. The image is read by looking at the near field above the chip.
 ![Two images and what comes out of them](figures/fig2_field.png)
 
 *Top row: a 20 by 20 image. Bottom row: a 21 by 21 image. Left: the simulated
-near field, both waveguides. Right: the value read out of each pixel. Each
-column has its own colour bar, in units of the input power; both images read out
-with every pixel correct.*
+near field, both waveguides. Right: the same field with everything but the
+straight waveguide masked out. Each column has its own colour bar, in units of
+the input power. The image is already there in the left column; masking the
+moving waveguide makes it easier to look at, and is a reading option, not a
+requirement.*
 
 ## What it is
 
@@ -56,17 +58,17 @@ bright pixel is 0.568 and the brightest dark pixel is 0.166, both in units of
 the input power. One row leaks into its neighbour by 21.9 dB, and into rows
 three or more away by 28.2 dB.
 
-![Target and measured pixel values](figures/fig3_readout.png)
+![The same image, calibrated and 35 % off](figures/fig3_degraded.png)
 
-*Left: the image that was encoded. Right: the pixel values that come back out of
-the simulation, for the same 20 by 20 pixels. The two panels share one colour
-scale, so the count of correct pixels can be checked by eye without the contrast
-being normalised away. The measured values sit below 1.0 because a bright pixel
-in the target is drawn as 1.0 while a measured bright pixel is 0.6 to 0.7 of the
-input power.*
+*Both panels are pixel maps of the same 21 by 21 image, on one colour scale.
+Left: the coupling section at its calibrated length, 441 of 441 pixels correct,
+contrast 80.8 times. Right: the same device with the coupling section 35 % too
+long, 283 of 441 pixels correct, contrast 2.7 times. The 35 % run is a reference
+for what failure looks like; it is not a specification.*
 
-The full near field of both images is `figures/fig2_field.png`; the layout is
-`figures/fig1_layout.png`.
+The pixel maps are used here, and only here, because these two states have to be
+compared on one scale. The near field of figure 2 already shows the image without
+any such processing.
 
 The design rule we state, and do not claim to have validated: the critical
 dimension may be off by about 23.3 divided by the number of exchanges in the row,
@@ -99,10 +101,10 @@ An image is a text file, one line per row, `#` for a bright pixel and `.` for a
 dark one. `images/example.txt` is the 20 by 20 image used throughout;
 `images/smile.txt` is the 21 by 21 one.
 
-Figures 3 and 4 are drawn from the shipped data by:
+Figures 2 and 3 are drawn from the shipped data by:
 
-    python make_figure.py dino --image images/example.txt --out figures/fig3_readout.png
-    python make_figure.py smile_e350 --image images/smile.txt --out figures/fig4_degraded.png
+    python plot_field_pair.py
+    python make_figure.py smile smile_e350 --out figures/fig3_degraded.png
 
 ## Simulate a row
 
@@ -128,7 +130,7 @@ number. The window and the threshold are in `parameters.json`.
     plot_field_pair.py   two images -> figure 2
     simulate_row.py      polygons -> one row of a wave simulation
     read_image.py        simulated data -> pixel values
-    make_figure.py       target against measurement, figures 3 and 4
+    make_figure.py       the same image in two states, figure 3
     reproduce.py         every quoted number, from data/
     parameters.json      every dimension, in one place
     images/              two images
