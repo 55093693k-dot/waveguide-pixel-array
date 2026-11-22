@@ -24,8 +24,8 @@ sys.path.insert(0, str(HERE))
 import encode_image as EI                                       # noqa: E402
 
 P = EI.P
-CELL = P["pixel"]["total_um"]
-PAD = P["pixel"]["pad_um"]
+CELL = P["unit"]["total_um"]
+PAD = P["unit"]["pad_um"]
 GAP_ON = P["waveguide"]["gap_coupled_um"]
 GAP_OFF = P["waveguide"]["gap_rest_um"]
 
@@ -37,7 +37,7 @@ def load_layout():
     if not path.exists():
         rows = EI.read_image(HERE / P["image"]["example"])
         return EI.image_geometry(rows, P["image"]["example"])
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def draw_row(ax, row, y_offset):
@@ -79,7 +79,7 @@ def main():
         ax2.axvline(x0 + k * CELL, color="0.65", lw=0.7, ls=":")
     ax2.set_xlabel("x (um)")
     ax2.set_ylabel("y (um)")
-    ax2.set_title("five pixels of row 0", fontsize=10)
+    ax2.set_title("five units of row 0", fontsize=10)
     ax2.tick_params(labelsize=8)
 
     # the two gaps, each labelled beside its own arrow
@@ -93,7 +93,7 @@ def main():
                  xytext=(x_c + 13.0, -0.40), fontsize=9, va="center",
                  arrowprops=dict(arrowstyle="->", lw=1.0, color="k"))
 
-    ax2.text(x0 + 0.6 * CELL, 0.44, "one pixel = %.0f um" % CELL, fontsize=9)
+    ax2.text(x0 + 0.6 * CELL, 0.44, "one unit = %.0f um" % CELL, fontsize=9)
 
     handles = [Patch([(0, 0), (1, 0), (1, 1)], facecolor=COLOURS[k],
                      label=k + " waveguide")
@@ -103,16 +103,19 @@ def main():
 
     fig.suptitle("Layout of the encoded image", fontsize=10, y=0.995)
 
-    out = HERE / "figures" / "fig1_layout_v3.png"
+    out = HERE / "figures" / "fig1_layout_v4.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches="tight")
-    print("written: figures/fig1_layout_v3.png  (%d rows, %d by %d pixels)"
+    print("written: figures/fig1_layout_v4.png  (%d rows, %d by %d pixels)"
           % (geo["rows"], geo["rows"], geo["columns"]))
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+
 
 
 

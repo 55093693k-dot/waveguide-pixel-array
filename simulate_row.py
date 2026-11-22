@@ -1,4 +1,4 @@
-"""simulate_row.py -- run one row of the device in a wave solver.
+﻿"""simulate_row.py -- run one row of the device in a wave solver.
 
 Takes a row of the image, builds the layout from encode_image.py, sends light
 in at one end, and writes what comes out: the four port powers and the near
@@ -34,7 +34,7 @@ T_SIM = P["mesh"]["simulation_time_s"]
 DOMAIN_H = P["mesh"]["domain_height_um"]
 MESH_Y = P["mesh"]["override_y_span_um"]
 MESH_XM = P["mesh"]["override_x_margin_um"]
-PAD = P["pixel"]["pad_um"]
+PAD = P["unit"]["pad_um"]
 PORT_SPAN = P["ports"]["span_um"]
 NFREQ = P["ports"]["frequency_points"]
 PORT_OFFSET = P["ports"]["offset_from_end_um"]
@@ -56,7 +56,7 @@ def design():
     supp = P["waveguide"]["suppression_ratio"]
     gap_rest = gap_on + np.log(supp) / gamma
     return {"gap_on": gap_on, "gap_rest": round(float(gap_rest), 4),
-            "active_um": P["pixel"]["active_um"]}
+            "active_um": P["unit"]["active_um"]}
 
 
 def build(fdtd, row, index=0, nfreq=None, port_span=None):
@@ -204,4 +204,5 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
+
 

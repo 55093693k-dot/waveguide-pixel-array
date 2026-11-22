@@ -25,15 +25,17 @@ requirement.*
 
 ## What it is
 
-The device is a silicon-on-insulator layout. Rows of pixels sit 2.4 micrometres
-apart. One pixel is one coupling section plus its two bends, twenty-one
-micrometres long. The 20 by 20 image covers 420 by 48 micrometres and its device
-is 452 micrometres wide; the 21 by 21 image covers 441 by 50.4 and its device is
+The device is a silicon-on-insulator layout. Rows of exchange units sit 2.4
+micrometres apart. One unit is one coupling section plus its two bends,
+twenty-one micrometres long, and it writes one pixel of the image: the light
+leaves it on whichever of the two waveguides the pixel value asks for. The 20 by
+20 image therefore needs 400 units, and covers 420 by 48 micrometres; its device
+is 452 micrometres wide. The 21 by 21 image covers 441 by 50.4 and its device is
 473 wide. The extra 32 micrometres are access at the two ends.
 
-![The layout the encoder produces](figures/fig1_layout_v3.png)
+![The layout the encoder produces](figures/fig1_layout_v4.png)
 
-*Top: the whole device. Bottom: five pixels of the first row, where the image
+*Top: the whole device. Bottom: five units of the first row, where the image
 changes twice. Both vertical axes are stretched, so a 0.3-micrometre waveguide is
 visible against a 2.4-micrometre row spacing. Where the image stays the same the
 two waveguides stay apart; where it changes, the moving waveguide is pulled in to
@@ -44,7 +46,7 @@ shows what the encoder actually produced.
 
 Each row is a pair of waveguides. Light enters on one of them. Where the image
 changes from dark to bright, or from bright to dark, the two waveguides are
-brought close over one pixel, and the light swaps to the other waveguide. Where
+brought close over one unit, and the light swaps to the other waveguide. Where
 the image stays the same, the two waveguides are kept apart and the light stays
 where it is. The straight waveguide therefore carries the image, and the other
 one carries its complement.
@@ -68,7 +70,7 @@ Measured against the reference, 10.8 is 25 % more.
 `parameters.json` ships the reference length, 8.66 micrometres, so
 `encode_image.py` and `simulate_row.py` build the middle row of the table. The
 8.0 micrometre device used for the 20 by 20 image is one edit away: set
-`pixel.active_um` to 8.0.
+`unit.active_um` to 8.0.
 
 With the reference device the two brightness groups do not overlap: the dimmest
 bright pixel is 0.632 and the brightest dark pixel is 0.087, both in units of the
@@ -147,7 +149,7 @@ waveguides of every row, in micrometres. It needs numpy only.
 
     python plot_geometry.py
 
-then draws that file and writes `figures/fig1_layout_v3.png`, the figure at the
+then draws that file and writes `figures/fig1_layout_v4.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
@@ -217,6 +219,7 @@ Chan King Ho.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 

@@ -1,4 +1,4 @@
-"""encode_image.py -- turn a binary image into a waveguide layout.
+﻿"""encode_image.py -- turn a binary image into a waveguide layout.
 
 Reads a text image (one line per row, '#' bright, '.' dark) and writes
 geometry.json: every polygon, ready to be imported into a layout editor or
@@ -18,24 +18,24 @@ from pathlib import Path
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
-P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8"))
+P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8-sig"))
 
 W = P["waveguide"]["width_um"]
 G_ON = P["waveguide"]["gap_coupled_um"]
 G_OFF = P["waveguide"]["gap_rest_um"]
-BEND = P["pixel"]["bend_um"]
-ACT = P["pixel"]["active_um"]
-CELL = P["pixel"]["total_um"]
-PAD = P["pixel"]["pad_um"]
-PITCH = P["pixel"]["row_pitch_um"]
-SMOOTH = P["pixel"]["transition"] == "smooth"
+BEND = P["unit"]["bend_um"]
+ACT = P["unit"]["active_um"]
+CELL = P["unit"]["total_um"]
+PAD = P["unit"]["pad_um"]
+PITCH = P["unit"]["row_pitch_um"]
+SMOOTH = P["unit"]["transition"] == "smooth"
 
 BRIGHT = "#1"
 
 
 def read_image(path):
     """Return the image as a list of strings, one per row."""
-    rows = [ln.strip() for ln in Path(path).read_text(encoding="utf-8").splitlines()]
+    rows = [ln.strip() for ln in Path(path).read_text(encoding="utf-8-sig").splitlines()]
     rows = [r for r in rows if r]
     if not rows:
         raise ValueError("%s holds no rows" % path)
@@ -184,4 +184,7 @@ def main(argv):
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
+
+
+
 

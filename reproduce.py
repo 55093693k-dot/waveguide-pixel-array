@@ -1,4 +1,4 @@
-"""reproduce.py -- recompute every number the paper quotes, from data/.
+﻿"""reproduce.py -- recompute every number the paper quotes, from data/.
 
 No wave solver is needed. Each check reads a shipped file, recomputes the
 number, and compares it with the value written in the paper. The exit code is
@@ -73,7 +73,7 @@ def main():
             check("    pixels wrong", res["wrong"], 158, 0)
 
     print("how far the addressed row leaks into its neighbours")
-    tiles = json.loads((DATA / "tile_crosstalk_from_map.json").read_text(encoding="utf-8"))
+    tiles = json.loads((DATA / "tile_crosstalk_from_map.json").read_text(encoding="utf-8-sig"))
     adjacent, far = -np.inf, -np.inf
     for tile in tiles:
         t = np.array([tile["T"][k] for k in sorted(tile["T"], key=int)], dtype=float)
@@ -86,7 +86,7 @@ def main():
     check("worst neighbour, three rows away, dB", far, -28.2, 0.1)
 
     print("what each row loses")
-    ports = json.loads((DATA / "port_powers.json").read_text(encoding="utf-8"))["rows"]
+    ports = json.loads((DATA / "port_powers.json").read_text(encoding="utf-8-sig"))["rows"]
     totals = np.array([row["total"] for row in ports.values()])
     check("rows in the loss record", len(totals), 20, 0)
     check("mean power out, of the input", totals.mean(), 0.9855, 5e-4)
@@ -103,7 +103,7 @@ def main():
     rule = float(np.exp(np.mean(np.log(tol * ns))))
     check("tolerance coefficient, nm", rule, 40.8, 0.1)
 
-    shipped = json.loads((DATA / "tolerance.json").read_text(encoding="utf-8"))
+    shipped = json.loads((DATA / "tolerance.json").read_text(encoding="utf-8-sig"))
     check("tolerance record agrees with the model",
           shipped["tolerance_nanometres_times_exchanges"], rule, 0.1)
 
@@ -117,3 +117,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

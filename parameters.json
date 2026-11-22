@@ -23,7 +23,7 @@
     "kappa_note": "0.1477 measured at width 0.30 and gap 0.20; it gives a half-beat length of 10.6 um, while the length actually used is 8.0"
   },
 
-  "pixel": {
+  "unit": {
     "bend_um": 5.0,
     "active_um": 8.66,
     "flat_um": 7.34,
@@ -72,3 +72,4 @@
     "format": "one line per row, '#' for a bright pixel, '.' for a dark one"
   }
 }
+

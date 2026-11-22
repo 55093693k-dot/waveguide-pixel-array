@@ -19,10 +19,10 @@ import matplotlib.pyplot as plt
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import read_image as RI                                       # noqa: E402
-P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8"))
-PITCH = P["pixel"]["row_pitch_um"]
-CELL = P["pixel"]["total_um"]
-PAD = P["pixel"]["pad_um"]
+P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8-sig"))
+PITCH = P["unit"]["row_pitch_um"]
+CELL = P["unit"]["total_um"]
+PAD = P["unit"]["pad_um"]
 DATA = HERE / "data"
 FIG = HERE / "figures"
 
@@ -34,7 +34,7 @@ FILES = {"dino": "example.txt", "smile": "smile.txt",
 def load(name):
     z = np.load(DATA / ("field_%s.npz" % name))
     rows = [ln.strip() for ln in (HERE / "images" / FILES[name])
-            .read_text(encoding="utf-8").splitlines() if ln.strip()]
+            .read_text(encoding="utf-8-sig").splitlines() if ln.strip()]
     return z["I"], z["x"], z["y"], rows
 
 
@@ -175,6 +175,9 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+
 
 
 

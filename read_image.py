@@ -1,4 +1,4 @@
-"""read_image.py -- recover the pixels from simulated data.
+﻿"""read_image.py -- recover the pixels from simulated data.
 
 Two kinds of input are accepted.
 
@@ -26,10 +26,10 @@ from pathlib import Path
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
-P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8"))
+P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8-sig"))
 
-CELL = P["pixel"]["total_um"]
-PAD = P["pixel"]["pad_um"]
+CELL = P["unit"]["total_um"]
+PAD = P["unit"]["pad_um"]
 LANE = P["readout"]["display_lane_offset_um"]
 XW = P["readout"]["x_half_window_um"]
 YW = P["readout"]["y_half_window_um"]
@@ -39,7 +39,7 @@ BRIGHT = "#1"
 
 
 def load_image(path):
-    rows = [ln.strip() for ln in Path(path).read_text(encoding="utf-8").splitlines()]
+    rows = [ln.strip() for ln in Path(path).read_text(encoding="utf-8-sig").splitlines()]
     return [r for r in rows if r]
 
 
@@ -193,3 +193,6 @@ def main(argv):
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
+
+
+
