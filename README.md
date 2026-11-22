@@ -31,7 +31,7 @@ micrometres long. The 20 by 20 image covers 420 by 48 micrometres and its device
 is 452 micrometres wide; the 21 by 21 image covers 441 by 50.4 and its device is
 473 wide. The extra 32 micrometres are access at the two ends.
 
-![The layout the encoder produces](figures/fig1_layout_v2.png)
+![The layout the encoder produces](figures/fig1_layout_v3.png)
 
 *Top: the whole device. Bottom: five pixels of the first row, where the image
 changes twice. Both vertical axes are stretched, so a 0.3-micrometre waveguide is
@@ -65,9 +65,10 @@ The percentages in the figure titles are relative to 8.0 micrometres, the length
 the single-exchange calibration gave: 8.66 is 8.3 % more, 10.8 is 35 % more.
 Measured against the reference, 10.8 is 25 % more.
 
-`parameters.json` ships the 8.0 micrometre length, so `encode_image.py` and
-`simulate_row.py` build the device of the first row of the table. To build the
-reference instead, set `pixel.active_um` to 8.66.
+`parameters.json` ships the reference length, 8.66 micrometres, so
+`encode_image.py` and `simulate_row.py` build the middle row of the table. The
+8.0 micrometre device used for the 20 by 20 image is one edit away: set
+`pixel.active_um` to 8.0.
 
 With the reference device the two brightness groups do not overlap: the dimmest
 bright pixel is 0.632 and the brightest dark pixel is 0.087, both in units of the
@@ -146,7 +147,7 @@ waveguides of every row, in micrometres. It needs numpy only.
 
     python plot_geometry.py
 
-then draws that file and writes `figures/fig1_layout_v2.png`, the figure at the
+then draws that file and writes `figures/fig1_layout_v3.png`, the figure at the
 top of this page.
 
 An image is a text file, one line per row, `#` for a bright pixel and `.` for a
@@ -198,7 +199,7 @@ Every dimension the encoder and the simulation use is in `parameters.json`.
 
 `data/` holds the per-pixel values, the port powers, the two assembled fields
 behind figure 2, and the geometry that was simulated
-(`geometry_simulated.json`). The fields there are decimated by two for display,
+(`geometry_20x20_simulated.json`). The fields there are decimated by two for display,
 about 1.3 MB each; the per-row field dumps they came from are 28 MB each and are
 not included.
 
@@ -216,5 +217,6 @@ Chan King Ho.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 

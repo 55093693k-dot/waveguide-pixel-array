@@ -25,16 +25,21 @@
 
   "pixel": {
     "bend_um": 5.0,
-    "active_um": 8.0,
-    "flat_um": 8.0,
+    "active_um": 8.66,
+    "flat_um": 7.34,
     "flat_note": "derived: total - bend - active",
     "total_um": 21.0,
-    "total_note": "bend 5 + active 8 + flat 8 = 21",
+    "total_note": "bend 5 + active 8.66 + flat 7.34 = 21",
     "transition": "smooth",
     "transition_note": "the bend into and out of the gap follows a raised-cosine ramp; a straight ramp gives a slope jump at both ends",
     "pad_um": 16.0,
     "row_pitch_um": 2.4,
-    "reference_note": "the run taken as the reference uses an active length of 8.66 um, 8.3 % longer than the value above, and reads every pixel correctly"
+    "lengths_simulated_um": {
+      "20 by 20 image": 8.0,
+      "reference": 8.66,
+      "35 percent too long": 10.8
+    },
+    "reference_note": "8.66 is the reference: it reads every pixel of the 21 by 21 image correctly and is what the encoder builds. 8.0 is the length the single-exchange calibration gave, used for the 20 by 20 image."
   },
 
   "mesh": {

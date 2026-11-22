@@ -103,15 +103,16 @@ def main():
 
     fig.suptitle("Layout of the encoded image", fontsize=10, y=0.995)
 
-    out = HERE / "figures" / "fig1_layout_v2.png"
+    out = HERE / "figures" / "fig1_layout_v3.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches="tight")
-    print("written: figures/fig1_layout_v2.png  (%d rows, %d by %d pixels)"
+    print("written: figures/fig1_layout_v3.png  (%d rows, %d by %d pixels)"
           % (geo["rows"], geo["rows"], geo["columns"]))
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 
