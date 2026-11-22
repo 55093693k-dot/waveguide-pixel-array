@@ -5,6 +5,8 @@ A coupled-waveguide pixel array for near-field image encoding.
 A binary image is written into a photonic chip as the transverse position of
 guided light. The image is read by looking at the near field above the chip.
 
+Archived release: [10.5281/zenodo.24435543](https://doi.org/10.5281/zenodo.24435543)
+
 Electronic chips have carried small pictures for decades: a dragon, a mascot, a
 signature, drawn into the metal. Those pictures are part of the layout, so a
 microscope shows them and nothing else is needed.
@@ -88,7 +90,7 @@ per-pixel calibration.
 
 **Loss.** Each row leaves 98.6 % of its input power in its two output waveguides:
 1.45 % lost along 452 micrometres, or 0.063 dB, of which less than 0.01 % comes
-back as reflection. The worst of the twenty rows is 0.065 dB
+back as reflection. The worst of the twenty rows is 0.067 dB
 (`data/port_powers.json`).
 
 **Crosstalk.** One addressed row leaks 21.9 dB down into the row beside it, and
@@ -226,6 +228,7 @@ Chan King Ho.
 ## Licence
 
 Code under MIT. Data and figures under CC BY 4.0.
+
 
 
 

@@ -24,8 +24,9 @@ HERE = Path(__file__).resolve().parent
 DATA = HERE / "data"
 FIG = HERE / "figures"
 
-SENSITIVITY = 16.8        # phase error per unit strain; 16.8 per micrometre of CD error
-TARGET = 2.0              # the contrast below which a row is taken to have failed
+_P = json.loads((HERE / "parameters.json").read_text(encoding="utf-8-sig"))
+SENSITIVITY = _P["tolerance"]["sensitivity_per_um"]   # per micrometre of CD error
+TARGET = _P["tolerance"]["target_contrast"]           # contrast taken as failure
 FRACTION = {18: 0.52, 24: 0.39, 30: 0.31, 36: 0.25}   # bend fraction of the pixel
 
 

@@ -91,6 +91,7 @@ def main():
     check("rows in the loss record", len(totals), 20, 0)
     check("mean power out, of the input", totals.mean(), 0.9855, 5e-4)
     check("loss, dB", -10 * np.log10(totals.mean()), 0.063, 5e-4)
+    check("loss of the worst line, dB", -10 * np.log10(totals.min()), 0.067, 5e-4)
 
     print("how far the critical dimension may drift")
     import plot_tolerance as PT

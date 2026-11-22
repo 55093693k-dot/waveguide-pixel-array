@@ -66,6 +66,12 @@
     "note": "a pixel is the mean of |E|^2 over +-8 um along the pixel and +-0.10 um across the straight waveguide, in units of the input power; 0.367 is midway between the dimmest bright pixel (0.568) and the brightest dark pixel (0.166)"
   },
 
+  "tolerance": {
+    "sensitivity_per_um": 16.8,
+    "target_contrast": 2.0,
+    "note": "sensitivity: phase error per micrometre of critical-dimension error; target: the contrast at which a line is taken to have failed. Both feed plot_tolerance.py; the rule it produces is 40.8 / N nanometres."
+  },
+
   "image": {
     "example": "images/example.txt",
     "second": "images/smile.txt",

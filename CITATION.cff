@@ -8,6 +8,7 @@ authors:
     given-names: King Ho
 type: software
 license: MIT
+doi: 10.5281/zenodo.24435543
 repository-code: https://github.com/55093693k-dot/waveguide-pixel-array
 abstract: >-
   A binary image is written into a photonic chip as the transverse position of
